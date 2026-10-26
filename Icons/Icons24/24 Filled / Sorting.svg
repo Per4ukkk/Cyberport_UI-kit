@@ -1,0 +1,14 @@
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24.000000" height="24.000000" fill="none">
+	<defs>
+		<clipPath id="clipPath_5">
+			<rect width="18.000000" height="18.000000" x="3.000000" y="3.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+	</defs>
+	<rect id="24 Filled / Sorting" width="24.000000" height="24.000000" x="0.000000" y="0.000000" fill="rgb(255,255,255)" fill-opacity="0" />
+	<path id="Ellipse 8" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12Z" fill="rgb(38,38,38)" fill-rule="evenodd" />
+	<g id="Icon/24/ic_arrow up Copy" customFrame="url(#clipPath_5)">
+		<rect id="Icon/24/ic_arrow up Copy" width="18.000000" height="18.000000" x="3.000000" y="3.000000" fill="rgb(255,255,255)" fill-opacity="0" />
+		<path id="Triangle" d="M11.4055 6.6386L8.87386 9.3386C8.34224 9.90557 8.71876 10.875 9.47058 10.875L14.5339 10.875C15.2858 10.875 15.6623 9.90557 15.1306 9.3386L12.599 6.6386C12.2694 6.28713 11.7351 6.28713 11.4055 6.6386Z" fill="rgb(255,255,255)" fill-rule="evenodd" />
+		<path id="Triangle" d="M2.78053 0.263604L0.248862 2.9636C-0.28276 3.53057 0.0937562 4.5 0.845583 4.5L5.90893 4.5C6.66076 4.5 7.03727 3.53057 6.50565 2.9636L3.97398 0.263604C3.64442 -0.087868 3.11009 -0.087868 2.78053 0.263604Z" fill="rgb(255,255,255)" fill-rule="evenodd" transform="matrix(1,0,0,-1,8.625,17.625)" />
+	</g>
+</svg>

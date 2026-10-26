@@ -1,0 +1,13 @@
+{
+  "categories": [
+    {"id":"foundations","title":"Токены","description":"Размерная система, отступы и скругления — основа согласованного интерфейса.","icon":"grid","articles":["module","spacing","radius"]},
+    {"id":"fields","title":"Поля","description":"Ввод текста, дат и времени. Работа с масками, подсказками и справочниками.","icon":"field","articles":["input","mask","phone","date","time","textarea","combobox","token-input"]},
+    {"id":"actions","title":"Действия","description":"Команды пользователя: от основного действия до группы команд в меню.","icon":"cursor","articles":["button","menu-button"]},
+    {"id":"selection","title":"Элементы выбора","description":"Один или несколько вариантов, настройки и переключение состояний.","icon":"check","articles":["checkbox","radio","select","switch"]},
+    {"id":"data","title":"Представление данных","description":"Статусы, категории и структура информации в карточках.","icon":"cards","articles":["badge","cards"]},
+    {"id":"principles","title":"Общие правила","description":"Проверка введённых значений, сообщения об ошибках и предупреждения.","icon":"validation","articles":["validation"]}
+  ],
+  "aliases": {
+    "button":"Button", "menu-button":"Menu button", "input":"Input", "mask":"Masked input", "phone":"Phone input", "date":"Date input", "time":"Time input", "textarea":"Textarea", "combobox":"Combobox", "token-input":"Token input", "checkbox":"Checkbox", "radio":"Radiobutton", "select":"Раскрывающийся список · Select", "switch":"Switch · Тогл", "badge":"Badge", "cards":"Cards", "module":"Module", "spacing":"Spacing", "radius":"Border radius", "validation":"Validation"
+  }
+}

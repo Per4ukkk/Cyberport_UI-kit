@@ -1,0 +1,21 @@
+.cp-menu-control { display: inline-block; position: relative; vertical-align: top; }
+.cp-menu-trigger .cp-button-icon, .cp-menu-glyph { background: currentColor; mask: var(--cp-menu-asset) center / contain no-repeat; -webkit-mask: var(--cp-menu-asset) center / contain no-repeat; }
+.cp-menu-glyph { display: inline-block; width: 20px; height: 20px; flex: 0 0 20px; }
+.cp-menu-item { appearance: none; box-sizing: border-box; display: flex; text-align: left; border: 0; margin: 0; cursor: pointer; font-synthesis: none; }
+.cp-menu-item:focus-visible, .cp-menu-trigger:focus-visible { outline: auto; outline-offset: 2px; }
+.cp-menu-item-copy { display: flex; flex-direction: column; flex: 0 0 auto; }
+.cp-menu-item-description { display: block; }
+.cp-menu-list { display: flex; flex-direction: column; }
+.cp-menu-list-title { box-sizing: border-box; }
+.cp-menu-dropdown { box-sizing: border-box; display: inline-flex; align-items: flex-start; }
+.cp-menu-column, .cp-menu-group { display: flex; flex-direction: column; flex-shrink: 0; }
+.cp-menu-divider { height: 1px; background: rgba(38,38,38,.08); }
+.cp-menu-popup { position: absolute; z-index: 3; top: calc(100% + var(--cp-menu-offset)); left: 0; }
+.cp-menu-dropdown[hidden] { display: none; }
+.menu-matrix { grid-template-columns: 80px repeat(4,minmax(251px,1fr)); min-width: 1132px; }
+.menu-slot { display: flex; align-items: flex-start; min-height: 60px; }
+.menu-slot-open { min-height: 180px; }
+.menu-demo-scroll { overflow-x: auto; padding: 8px; margin: -8px; }
+.menu-items-gallery { display: grid; grid-template-columns: repeat(auto-fit,minmax(170px,1fr)); gap: 24px; margin: 20px 0 32px; }
+.menu-subcaption { color: #616e7c; font-size: 12px; line-height: 18px; margin: 8px 0; }
+.menu-structure-gallery { display: flex; flex-wrap: wrap; gap: 32px; margin: 20px 0; }

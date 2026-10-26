@@ -1,0 +1,610 @@
+[
+  {
+    "key": "h1-display-semibold",
+    "name": "H1 Display",
+    "sourceId": "7:6",
+    "fontFamily": "SB Sans Display",
+    "fontStyle": "Semibold",
+    "fontSize": 30,
+    "fontWeight": 600,
+    "lineHeight": 36,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Display\", sans-serif",
+      "font-size": "30px",
+      "font-weight": "600",
+      "line-height": "36px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "h1-display-medium",
+    "name": "H1 Display",
+    "sourceId": "7:90",
+    "fontFamily": "SB Sans Display",
+    "fontStyle": "Medium",
+    "fontSize": 30,
+    "fontWeight": 500,
+    "lineHeight": 36,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Display\", sans-serif",
+      "font-size": "30px",
+      "font-weight": "500",
+      "line-height": "36px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "h1-display-regular",
+    "name": "H1 Display",
+    "sourceId": "7:96",
+    "fontFamily": "SB Sans Display",
+    "fontStyle": "Regular",
+    "fontSize": 30,
+    "fontWeight": 400,
+    "lineHeight": 36,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Display\", sans-serif",
+      "font-size": "30px",
+      "font-weight": "400",
+      "line-height": "36px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "h2-display-semibold",
+    "name": "H2 Display",
+    "sourceId": "7:12",
+    "fontFamily": "SB Sans Display",
+    "fontStyle": "Semibold",
+    "fontSize": 24,
+    "fontWeight": 600,
+    "lineHeight": 28,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Display\", sans-serif",
+      "font-size": "24px",
+      "font-weight": "600",
+      "line-height": "28px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "h2-display-medium",
+    "name": "H2 Display",
+    "sourceId": "7:116",
+    "fontFamily": "SB Sans Display",
+    "fontStyle": "Medium",
+    "fontSize": 24,
+    "fontWeight": 500,
+    "lineHeight": 28,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Display\", sans-serif",
+      "font-size": "24px",
+      "font-weight": "500",
+      "line-height": "28px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "h2-display-regular",
+    "name": "H2 Display",
+    "sourceId": "7:122",
+    "fontFamily": "SB Sans Display",
+    "fontStyle": "Regular",
+    "fontSize": 24,
+    "fontWeight": 400,
+    "lineHeight": 28,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Display\", sans-serif",
+      "font-size": "24px",
+      "font-weight": "400",
+      "line-height": "28px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "h3-display-semibold",
+    "name": "H3 Display",
+    "sourceId": "7:19",
+    "fontFamily": "SB Sans Display",
+    "fontStyle": "Semibold",
+    "fontSize": 20,
+    "fontWeight": 600,
+    "lineHeight": 24,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Display\", sans-serif",
+      "font-size": "20px",
+      "font-weight": "600",
+      "line-height": "24px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "h3-display-medium",
+    "name": "H3 Display",
+    "sourceId": "7:135",
+    "fontFamily": "SB Sans Display",
+    "fontStyle": "Medium",
+    "fontSize": 20,
+    "fontWeight": 500,
+    "lineHeight": 24,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Display\", sans-serif",
+      "font-size": "20px",
+      "font-weight": "500",
+      "line-height": "24px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "h3-display-regular",
+    "name": "H3 Display",
+    "sourceId": "7:141",
+    "fontFamily": "SB Sans Display",
+    "fontStyle": "Regular",
+    "fontSize": 20,
+    "fontWeight": 400,
+    "lineHeight": 24,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Display\", sans-serif",
+      "font-size": "20px",
+      "font-weight": "400",
+      "line-height": "24px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "h3-interface-semibold",
+    "name": "H3 Interface",
+    "sourceId": "7:25",
+    "fontFamily": "SB Sans Interface",
+    "fontStyle": "Semibold",
+    "fontSize": 20,
+    "fontWeight": 600,
+    "lineHeight": 24,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Interface\", sans-serif",
+      "font-size": "20px",
+      "font-weight": "600",
+      "line-height": "24px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "h3-interface-regular",
+    "name": "H3 Interface",
+    "sourceId": "7:153",
+    "fontFamily": "SB Sans Interface",
+    "fontStyle": "Regular",
+    "fontSize": 20,
+    "fontWeight": 400,
+    "lineHeight": 24,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Interface\", sans-serif",
+      "font-size": "20px",
+      "font-weight": "400",
+      "line-height": "24px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "h4-interface-semibold",
+    "name": "H4 Interface",
+    "sourceId": "7:31",
+    "fontFamily": "SB Sans Interface",
+    "fontStyle": "Semibold",
+    "fontSize": 18,
+    "fontWeight": 600,
+    "lineHeight": 20,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Interface\", sans-serif",
+      "font-size": "18px",
+      "font-weight": "600",
+      "line-height": "20px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "h4-interface-regular",
+    "name": "H4 Interface",
+    "sourceId": "7:173",
+    "fontFamily": "SB Sans Interface",
+    "fontStyle": "Regular",
+    "fontSize": 18,
+    "fontWeight": 400,
+    "lineHeight": 20,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Interface\", sans-serif",
+      "font-size": "18px",
+      "font-weight": "400",
+      "line-height": "20px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "body-1-interface-semibold",
+    "name": "Body 1 Interface",
+    "sourceId": "7:39",
+    "fontFamily": "SB Sans Interface",
+    "fontStyle": "Semibold",
+    "fontSize": 18,
+    "fontWeight": 600,
+    "lineHeight": 24,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Interface\", sans-serif",
+      "font-size": "18px",
+      "font-weight": "600",
+      "line-height": "24px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "body-1-interface-regular",
+    "name": "Body 1 Interface",
+    "sourceId": "7:190",
+    "fontFamily": "SB Sans Interface",
+    "fontStyle": "Regular",
+    "fontSize": 18,
+    "fontWeight": 400,
+    "lineHeight": 24,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Interface\", sans-serif",
+      "font-size": "18px",
+      "font-weight": "400",
+      "line-height": "24px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "body-1-text-semibold",
+    "name": "Body 1 Text",
+    "sourceId": "7:45",
+    "fontFamily": "SB Sans Text",
+    "fontStyle": "Semibold",
+    "fontSize": 18,
+    "fontWeight": 600,
+    "lineHeight": 24,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Text\", sans-serif",
+      "font-size": "18px",
+      "font-weight": "600",
+      "line-height": "24px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "body-1-text-medium",
+    "name": "Body 1 Text",
+    "sourceId": "7:196",
+    "fontFamily": "SB Sans Text",
+    "fontStyle": "Medium",
+    "fontSize": 18,
+    "fontWeight": 500,
+    "lineHeight": 24,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Text\", sans-serif",
+      "font-size": "18px",
+      "font-weight": "500",
+      "line-height": "24px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "body-1-text-regular",
+    "name": "Body 1 Text",
+    "sourceId": "7:204",
+    "fontFamily": "SB Sans Text",
+    "fontStyle": "Regular",
+    "fontSize": 18,
+    "fontWeight": 400,
+    "lineHeight": 24,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Text\", sans-serif",
+      "font-size": "18px",
+      "font-weight": "400",
+      "line-height": "24px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "body-2-interface-semibold",
+    "name": "Body 2 Interface",
+    "sourceId": "7:52",
+    "fontFamily": "SB Sans Interface",
+    "fontStyle": "Semibold",
+    "fontSize": 16,
+    "fontWeight": 600,
+    "lineHeight": 20,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Interface\", sans-serif",
+      "font-size": "16px",
+      "font-weight": "600",
+      "line-height": "20px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "body-2-interface-regular",
+    "name": "Body 2 Interface",
+    "sourceId": "7:234",
+    "fontFamily": "SB Sans Interface",
+    "fontStyle": "Regular",
+    "fontSize": 16,
+    "fontWeight": 400,
+    "lineHeight": 20,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Interface\", sans-serif",
+      "font-size": "16px",
+      "font-weight": "400",
+      "line-height": "20px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "body-2-text-semibold",
+    "name": "Body 2 Text",
+    "sourceId": "7:58",
+    "fontFamily": "SB Sans Text",
+    "fontStyle": "Semibold",
+    "fontSize": 16,
+    "fontWeight": 600,
+    "lineHeight": 20,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Text\", sans-serif",
+      "font-size": "16px",
+      "font-weight": "600",
+      "line-height": "20px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "body-2-text-medium",
+    "name": "Body 2 Text",
+    "sourceId": "7:246",
+    "fontFamily": "SB Sans Text",
+    "fontStyle": "Medium",
+    "fontSize": 16,
+    "fontWeight": 500,
+    "lineHeight": 20,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Text\", sans-serif",
+      "font-size": "16px",
+      "font-weight": "500",
+      "line-height": "20px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "body-2-text-regular",
+    "name": "Body 2 Text",
+    "sourceId": "7:252",
+    "fontFamily": "SB Sans Text",
+    "fontStyle": "Regular",
+    "fontSize": 16,
+    "fontWeight": 400,
+    "lineHeight": 20,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Text\", sans-serif",
+      "font-size": "16px",
+      "font-weight": "400",
+      "line-height": "20px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "body-3-interface-semibold",
+    "name": "Body 3 Interface",
+    "sourceId": "7:65",
+    "fontFamily": "SB Sans Interface",
+    "fontStyle": "Semibold",
+    "fontSize": 14,
+    "fontWeight": 600,
+    "lineHeight": 20,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Interface\", sans-serif",
+      "font-size": "14px",
+      "font-weight": "600",
+      "line-height": "20px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "body-3-interface-regular",
+    "name": "Body 3 Interface",
+    "sourceId": "7:269",
+    "fontFamily": "SB Sans Interface",
+    "fontStyle": "Regular",
+    "fontSize": 14,
+    "fontWeight": 400,
+    "lineHeight": 20,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Interface\", sans-serif",
+      "font-size": "14px",
+      "font-weight": "400",
+      "line-height": "20px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "body-3-text-semibold",
+    "name": "Body 3 Text",
+    "sourceId": "7:71",
+    "fontFamily": "SB Sans Text",
+    "fontStyle": "Semibold",
+    "fontSize": 14,
+    "fontWeight": 600,
+    "lineHeight": 20,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Text\", sans-serif",
+      "font-size": "14px",
+      "font-weight": "600",
+      "line-height": "20px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "body-3-text-medium",
+    "name": "Body 3 Text",
+    "sourceId": "7:282",
+    "fontFamily": "SB Sans Text",
+    "fontStyle": "Medium",
+    "fontSize": 14,
+    "fontWeight": 500,
+    "lineHeight": 20,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Text\", sans-serif",
+      "font-size": "14px",
+      "font-weight": "500",
+      "line-height": "20px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "body-3-text-regular",
+    "name": "Body 3 Text",
+    "sourceId": "7:288",
+    "fontFamily": "SB Sans Text",
+    "fontStyle": "Regular",
+    "fontSize": 14,
+    "fontWeight": 400,
+    "lineHeight": 20,
+    "letterSpacing": 0,
+    "rules": {
+      "font-family": "\"SB Sans Text\", sans-serif",
+      "font-size": "14px",
+      "font-weight": "400",
+      "line-height": "20px",
+      "letter-spacing": "0px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "caption-1-interface-semibold",
+    "name": "Caption 1 Interface",
+    "sourceId": "7:78",
+    "fontFamily": "SB Sans Interface",
+    "fontStyle": "Semibold",
+    "fontSize": 12,
+    "fontWeight": 600,
+    "lineHeight": 16,
+    "letterSpacing": 0.2,
+    "rules": {
+      "font-family": "\"SB Sans Interface\", sans-serif",
+      "font-size": "12px",
+      "font-weight": "600",
+      "line-height": "16px",
+      "letter-spacing": "0.2px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "caption-1-interface-regular",
+    "name": "Caption 1 Interface",
+    "sourceId": "7:305",
+    "fontFamily": "SB Sans Interface",
+    "fontStyle": "Regular",
+    "fontSize": 12,
+    "fontWeight": 400,
+    "lineHeight": 16,
+    "letterSpacing": 0.2,
+    "rules": {
+      "font-family": "\"SB Sans Interface\", sans-serif",
+      "font-size": "12px",
+      "font-weight": "400",
+      "line-height": "16px",
+      "letter-spacing": "0.2px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "caption-2-interface-semibold",
+    "name": "Caption 2 Interface",
+    "sourceId": "7:84",
+    "fontFamily": "SB Sans Interface",
+    "fontStyle": "Semibold",
+    "fontSize": 11,
+    "fontWeight": 600,
+    "lineHeight": 16,
+    "letterSpacing": 0.2,
+    "rules": {
+      "font-family": "\"SB Sans Interface\", sans-serif",
+      "font-size": "11px",
+      "font-weight": "600",
+      "line-height": "16px",
+      "letter-spacing": "0.2px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  },
+  {
+    "key": "caption-2-interface-regular",
+    "name": "Caption 2 Interface",
+    "sourceId": "7:312",
+    "fontFamily": "SB Sans Interface",
+    "fontStyle": "Regular",
+    "fontSize": 11,
+    "fontWeight": 400,
+    "lineHeight": 16,
+    "letterSpacing": 0.2,
+    "rules": {
+      "font-family": "\"SB Sans Interface\", sans-serif",
+      "font-size": "11px",
+      "font-weight": "400",
+      "line-height": "16px",
+      "letter-spacing": "0.2px",
+      "color": "rgba(38, 44, 49, 1)"
+    }
+  }
+]

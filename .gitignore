@@ -1,0 +1,39 @@
+# Only the documentation site and its build inputs belong in this repository.
+/*
+!/.gitignore
+!/README.md
+!/package.json
+!/package-lock.json
+!/vercel.json
+!/scripts/
+!/content/
+!/public/
+!/ui-kit/
+!/Icons/
+!/Шрифты/
+
+node_modules/
+.DS_Store
+.env
+.env.*
+*.pdf
+
+# Keep only the scripts needed to build, serve and validate the site.
+/scripts/*
+!/scripts/build.mjs
+!/scripts/render-site.mjs
+!/scripts/site-icons.mjs
+!/scripts/serve.mjs
+!/scripts/check.mjs
+
+# The temporary component galleries and extraction metadata stay local.
+/ui-kit/*gallery*
+/ui-kit/*.md
+/ui-kit/*.json
+!/ui-kit/text-styles.json
+
+# Runtime web fonts only; original archives and desktop fonts stay local.
+/Шрифты/*
+!/Шрифты/WEB/
+/Шрифты/WEB/*
+!/Шрифты/WEB/*.woff2
