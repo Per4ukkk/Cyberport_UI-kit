@@ -42,7 +42,8 @@
 .cp-token{border:0;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;min-width:0;max-width:100%;}
 .cp-token-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
 .cp-token button{border:0;padding:0;background:none;display:inline-flex;cursor:pointer;flex:none;color:#808b95;}
-.cp-token button:hover{color:#262c31;}
+.cp-token button:hover:not(:disabled){color:#262c31;}
+.cp-field[data-disabled=true] .cp-token,.cp-token button:disabled,.cp-token-more:disabled{cursor:default;}
 .cp-token-more{cursor:pointer;}
 .cp-token-add{display:flex;gap:4px;align-items:center;padding:4px;}
 .cp-token-add .cp-input{border:1px solid #dfe2e4;border-radius:4px;padding:4px 8px;}
@@ -100,9 +101,9 @@ nav{flex-wrap:wrap;}
 .cp-calendar-cell:active:enabled::before{background:var(--cp-day-press);}
 .cp-calendar-cell[data-selected=true]::before,.cp-calendar-cell[data-selected=true]:hover::before{background:var(--cp-day-selected);border-radius:6px;}
 .cp-calendar-years{row-gap:4px;}.cp-calendar-years button{height:36px;}
-.cp-masked-input{color:transparent!important;-webkit-text-fill-color:transparent!important;caret-color:#262c31;}
-.cp-masked-input::placeholder{-webkit-text-fill-color:var(--cp-placeholder);color:var(--cp-placeholder);}
-.cp-masked-input::selection{color:transparent;}
+.cp-masked-input{color:transparent!important;-webkit-text-fill-color:transparent!important;caret-color:transparent;}
+.cp-masked-input::placeholder{-webkit-text-fill-color:transparent;color:transparent;}
+.cp-masked-input::selection{color:transparent;background:transparent;}
 .cp-mask-mirror{position:absolute;top:50%;transform:translateY(-50%);pointer-events:none;white-space:pre;overflow:hidden;}
 /* Text spacing is independent of the wider empty mask slots. */
 .cp-masked-input{letter-spacing:0!important;}
@@ -117,3 +118,8 @@ nav{flex-wrap:wrap;}
 .cp-token-add{padding:0;gap:4px;align-items:center;width:100%;}
 .cp-token-add>.cp-field{flex:1;min-width:0;}
 .cp-token-add .cp-input{border:0;padding:0;border-radius:0;}
+
+.cp-mask-measure{position:absolute;visibility:hidden;white-space:pre;pointer-events:none;width:max-content;letter-spacing:0}
+.cp-mask-caret{position:absolute;top:0;height:1em;border-left:1px solid #262c31;animation:cp-caret-blink 1s step-end infinite}
+@keyframes cp-caret-blink{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.cp-mask-caret{animation:none}}

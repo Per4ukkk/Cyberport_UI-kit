@@ -2,7 +2,7 @@ import {createField} from './field.js';
 import {cpFlash,cpMaskMirror} from './control-core.js';
 /** # is a digit slot; separators are literal. variableLength hides the empty mask. */
 export function createMaskField({pattern='## ## ######',prefix='',variableLength=false,maxLength,normalize, ...options}={}) {
-  const f=createField({...options,family:prefix?'Phone_Field':'Mask_field',value:''});const {input,shell}=f;
+  const f=createField({...options,placeholder:options.placeholder??prefix+pattern.replace(/#/g,'_'),family:prefix?'Phone_Field':'Mask_field',value:''});const {input,shell}=f;
   input.inputMode='numeric';const slots=[...pattern].map((c,i)=>c==='#'?i:-1).filter(i=>i>=0),capacity=maxLength||slots.length;
   let digits='',focused=false,internal=false;const mirror=cpMaskMirror(input,shell,f.variant('Filled').value.color,f.variant('Normal').value.color);
   const clean=v=>(normalize?normalize(v):v).replace(/\D/g,'').slice(0,capacity);

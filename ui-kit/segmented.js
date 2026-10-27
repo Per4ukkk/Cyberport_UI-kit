@@ -7,13 +7,18 @@ export function cpDateFrom(value){
 }
 export function cpDateText(date){return [date.getDate(),date.getMonth()+1,date.getFullYear()].map((v,i)=>String(v).padStart(i===2?4:2,'0')).join('.');}
 /** One native text input, with selection over the active segment. */
-export function createSegmentField({kind='time',seconds=false,min,max,onChange,...options}={}){
+export function createSegmentField({kind='time',seconds=false,min,max,onChange,width=250,...options}={}){
   const date=kind==='date',lengths=date?[2,2,4]:seconds?[2,2,2]:[2,2],separator=date?'.':':';
-  const f=createField({...options,family:date?'Date_Field':'Time_Field',seconds,value:'',icon:date?'24 Linear / Calendar - Dates':'24 Linear / Clock'});
+  const f=createField({...options,placeholder:options.placeholder??lengths.map(n=>'_'.repeat(n)).join(separator),width:width==='auto'?'max-content':width,family:date?'Date_Field':'Time_Field',seconds,value:'',icon:date?'24 Linear / Calendar - Dates':'24 Linear / Clock'});
   const {input,shell}=f;input.inputMode='numeric';input.classList.add('cp-segment-input');
   const starts=lengths.map((_,i)=>lengths.slice(0,i).reduce((a,b)=>a+b+1,0));let parts=lengths.map(()=>''),part=0,fresh=true,focused=false,internal=false;
   const minimum=cpDateFrom(min),maximum=cpDateFrom(max);const mirror=cpMaskMirror(input,shell,f.variant('Filled').value.color,f.variant('Normal').value.color);
-  function display(){input.value=parts.some(Boolean)?parts.map((p,i)=>focused?p.padEnd(lengths[i],'_'):p).join(separator):focused?lengths.map(n=>'_'.repeat(n)).join(separator):'';f.paint();mirror();}
+  function fit(){
+    if(width!=='auto')return;
+    const filled=lengths.map(n=>'8'.repeat(n)).join(separator),empty=lengths.map(n=>'_'.repeat(n)).join(separator);
+    input.style.flex='none';input.style.width=Math.ceil(Math.max(mirror.measure(filled),mirror.measure(empty)))+2+'px';
+  }
+  function display(){input.value=parts.some(Boolean)?parts.map((p,i)=>focused?p.padEnd(lengths[i],'_'):p).join(separator):focused?lengths.map(n=>'_'.repeat(n)).join(separator):'';f.paint();mirror();fit();}
   function select(){if(focused)input.setSelectionRange(starts[part],starts[part]+lengths[part]);mirror(false,focused?[starts[part],starts[part]+lengths[part]]:null);}
   function emit(){internal=true;display();input.dispatchEvent(new Event('input',{bubbles:true}));internal=false;select();onChange?.(api.value);}
   function move(i){part=Math.max(0,Math.min(lengths.length-1,i));fresh=true;select();}
@@ -56,6 +61,6 @@ export function createSegmentField({kind='time',seconds=false,min,max,onChange,.
   input.addEventListener('paste',e=>{e.preventDefault();const s=e.clipboardData.getData('text');if(date){const d=cpDateFrom(s);if(!validRange(d)){cpFlash(shell);return;}set(d);}else set(s);emit();});
   input.addEventListener('input',()=>{if(!internal)set(input.value);});
   const api={...f,setState(s){f.setState(s);display();},get value(){return parts.some(Boolean)?parts.map((p,i)=>p.padEnd(lengths[i],'_')).join(separator):'';},setValue:set,complete,get date(){return date?cpDateFrom(api.value):null;},inRange:validRange};
-  set(options.value||'');return api;
+  set(options.value||'');document.fonts?.ready.then(()=>{fit();mirror();});return api;
 }
 export function createTimeField(options={}){return createSegmentField({...options,kind:'time'});}

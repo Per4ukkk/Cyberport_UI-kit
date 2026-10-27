@@ -32,7 +32,9 @@ for(const form of document.querySelectorAll('.search-form')){
 
 const menu=document.querySelector('#mobile-navigation');
 const menuButton=document.querySelector('.menu-toggle');
-menuButton?.addEventListener('click',()=>{menu.showModal();menuButton.setAttribute('aria-expanded','true');document.body.style.overflow='hidden';});
+menuButton?.addEventListener('click',()=>{menu.showModal();menuButton.setAttribute('aria-expanded','true');document.body.style.overflow='hidden';menu.querySelector('.menu-close').focus({preventScroll:true});});
+const desktopNavigation=matchMedia('(min-width: 1100px)');
+desktopNavigation.addEventListener('change',event=>{if(event.matches&&!document.body.classList.contains('home-page')&&menu.open)menu.close();});
 function closeMenu(){menu.close();}
 menu?.querySelector('.menu-close').addEventListener('click',closeMenu);
 menu?.addEventListener('click',e=>{if(e.target===menu){const b=menu.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)closeMenu();}});

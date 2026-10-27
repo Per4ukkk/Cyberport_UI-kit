@@ -25,7 +25,7 @@ export function createField({family='Field',size='Md',state='Normal',label='Valu
     cpStyle(shell,v.body.style);shell.style.height=v.body.box.height+'px';shell.style.gap=v.body.gap+'px';
     // Source TextArea body is allowed to grow; its controller supplies the height.
     if(family==='TextArea'){shell.style.height='auto';shell.style.minHeight=v.body.box.height+'px';}
-    const actual=variant('Filled').value;cpStyle(input,{...v.value,color:actual.color});
+    const actual=variant('Filled').value;cpStyle(input,{...v.value,color:state==='Disabled'?v.value.color:actual.color});
     shell.style.setProperty('--cp-placeholder',v.value.color);
     element.style.setProperty('--cp-input-line',v.value.lineHeight);
     accessory.replaceChildren();accessory.hidden=true;

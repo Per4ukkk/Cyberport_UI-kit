@@ -49,26 +49,46 @@ export function cpPopup(anchor,popup){
   document.addEventListener('pointerdown',closeOutside);window.addEventListener('resize',place);
   return {place,destroy(){document.removeEventListener('pointerdown',closeOutside);window.removeEventListener('resize',place);}};
 }
-/** Native input owns keyboard/editing; the mirror shows mask spacing and segment selection. */
+/** Native input owns editing; the mirror separates mask spacing from entered text. */
 export function cpMaskMirror(input,shell,filledColor,maskColor){
   const mirror=cpElement('span','cp-mask-mirror');mirror.setAttribute('aria-hidden','true');shell.append(mirror);input.classList.add('cp-masked-input');
-  function update(emptyPrefix=false,selection=null){
-    mirror.replaceChildren();Object.assign(mirror.style,{fontFamily:input.style.fontFamily,fontSize:input.style.fontSize,fontWeight:input.style.fontWeight,lineHeight:input.style.lineHeight,letterSpacing:'0px',left:shell.style.paddingLeft||getComputedStyle(shell).paddingLeft,right:shell.style.paddingRight||getComputedStyle(shell).paddingRight});
-    const value=input.value,bounds=selection?[0,selection[0],selection[1],value.length]:[0,value.length];
-    for(let group=0;group<bounds.length-1;group++){
-      const from=bounds[group],to=bounds[group+1];if(to<=from)continue;
-      const wrapper=cpElement('span',selection&&group===1?'cp-mask-active':'');let offset=from;
-      for(const run of value.slice(from,to).split(/(_+)/)){
-        if(!run)continue;const span=cpElement('span',run.startsWith('_')?'cp-mask-empty':'cp-mask-value',run);span.dataset.start=offset;span.dataset.end=offset+run.length;offset+=run.length;
-        span.style.color=run.startsWith('_')||emptyPrefix||input.disabled?maskColor:filledColor;wrapper.append(span);
-      }
-      mirror.append(wrapper);
+  let emptyPrefix=false;
+  function appendRuns(parent,value,offset=0){
+    for(const run of value.split(/(_+)/)){
+      if(!run)continue;const span=cpElement('span',run.startsWith('_')?'cp-mask-empty':'cp-mask-value',run);span.dataset.start=offset;span.dataset.end=offset+run.length;offset+=run.length;
+      span.style.color=run.startsWith('_')||emptyPrefix||!input.value||input.disabled?maskColor:filledColor;parent.append(span);
     }
   }
+  function xAt(index){
+    for(const run of mirror.querySelectorAll('[data-start]')){
+      const start=+run.dataset.start,end=+run.dataset.end;
+      if(index<=end){const range=document.createRange();range.setStart(run.firstChild,Math.max(0,Math.min(index-start,run.textContent.length)));range.collapse(true);return range.getBoundingClientRect().left-mirror.getBoundingClientRect().left;}
+    }
+    return 0;
+  }
+  function update(prefix=emptyPrefix,selection){
+    emptyPrefix=prefix;mirror.replaceChildren();Object.assign(mirror.style,{fontFamily:input.style.fontFamily,fontSize:input.style.fontSize,fontWeight:input.style.fontWeight,lineHeight:input.style.lineHeight,letterSpacing:'0px',left:shell.style.paddingLeft||getComputedStyle(shell).paddingLeft,right:shell.style.paddingRight||getComputedStyle(shell).paddingRight});
+    const focused=document.activeElement===input&&!input.disabled,value=input.value||input.placeholder;
+    if(selection===undefined&&focused&&input.selectionEnd>input.selectionStart)selection=[input.selectionStart,input.selectionEnd];
+    const bounds=selection?[0,selection[0],selection[1],value.length]:[0,value.length];
+    for(let group=0;group<bounds.length-1;group++){
+      const from=bounds[group],to=bounds[group+1];if(to<=from)continue;
+      const wrapper=cpElement('span',selection&&group===1?'cp-mask-active':'');appendRuns(wrapper,value.slice(from,to),from);mirror.append(wrapper);
+    }
+    if(focused&&!selection){const caret=cpElement('span','cp-mask-caret');caret.style.left=xAt(input.selectionStart)+'px';mirror.append(caret);}
+  }
   update.indexAt=x=>{
-    const runs=[...mirror.querySelectorAll('[data-start]')];
-    for(const run of runs){const r=run.getBoundingClientRect();if(x<r.left)return +run.dataset.start;if(x<=r.right)return +run.dataset.start+Math.min(run.textContent.length-1,Math.floor((x-r.left)/r.width*run.textContent.length));}
-    return Math.max(0,input.value.length-1);
+    for(const run of mirror.querySelectorAll('[data-start]')){
+      const text=run.firstChild;
+      for(let i=0;i<text.length;i++){const range=document.createRange();range.setStart(text,i);range.setEnd(text,i+1);const r=range.getBoundingClientRect();if(x<r.left+r.width/2)return +run.dataset.start+i;}
+    }
+    return (input.value||input.placeholder).length;
   };
+  update.measure=value=>{
+    const sample=cpElement('span','cp-mask-measure');Object.assign(sample.style,{fontFamily:input.style.fontFamily,fontSize:input.style.fontSize,fontWeight:input.style.fontWeight,lineHeight:input.style.lineHeight});appendRuns(sample,value);shell.append(sample);const width=sample.getBoundingClientRect().width;sample.remove();return width;
+  };
+  const refresh=()=>queueMicrotask(()=>update());
+  for(const event of ['select','keyup','focus','blur','input'])input.addEventListener(event,refresh);
+  input.addEventListener('click',event=>{if(!input.classList.contains('cp-segment-input')&&input.selectionStart===input.selectionEnd){const index=Math.min(input.value.length,update.indexAt(event.clientX));input.setSelectionRange(index,index);}refresh();});
   return update;
 }

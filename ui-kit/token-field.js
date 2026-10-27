@@ -13,7 +13,7 @@ export function createTokenField({options=[],value=[],allowCustom=false,onChange
     const n=tokenData(hidden),geometry=tokenData(hidden,true),el=cpElement(hidden?'button':'span','cp-token'+(hidden?' cp-token-more':''));
     if(hidden){el.type='button';el.setAttribute('aria-label','Показать ещё '+o.label.slice(1)+' выбранных');el.addEventListener('click',()=>{input.focus();open();});}
     cpStyle(el,{...n.style,...cpTextNodes(n)[0].typo,height:n.box.height+'px',gap:geometry.layout.itemSpacing+'px',padding:geometry.style.padding});
-    el.addEventListener('mouseenter',()=>cpStyle(el,tokenData(hidden,true).style));el.addEventListener('mouseleave',()=>cpStyle(el,{...n.style,padding:geometry.style.padding}));
+    el.addEventListener('mouseenter',()=>{if(!input.disabled)cpStyle(el,tokenData(hidden,true).style);});el.addEventListener('mouseleave',()=>{if(!input.disabled)cpStyle(el,{...n.style,padding:geometry.style.padding});});
     const label=cpElement('span','cp-token-label',o.label);label.title=o.label;el.append(label);
     if(!hidden){const remove=cpElement('button');remove.type='button';remove.disabled=input.disabled;remove.setAttribute('aria-label','Удалить '+o.label);const icon=n.children.find(c=>c.name.includes('Cross'));remove.append(cpIcon('24 Linear / Cross - Large',icon?.box.width||16));remove.addEventListener('pointerdown',e=>e.preventDefault());remove.addEventListener('click',e=>{e.stopPropagation();const hadFocus=document.activeElement===remove;selected.delete(o.value);changed();if(hadFocus)row.querySelector('button')?.focus();});el.append(remove);}else el.disabled=input.disabled;
     return el;
