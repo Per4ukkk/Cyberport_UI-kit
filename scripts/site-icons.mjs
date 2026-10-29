@@ -3,7 +3,7 @@ import path from 'node:path';
 
 // Every interface glyph is copied from the supplied icon library without path changes.
 export const SITE_ICONS={
- search:'Search',menu:'Bars',close:'Cross - Large',external:'Extenal Link',expand:'Expand - Alt',
+ search:'Search',menu:'Bars',close:'Cross - Large',external:'Extenal Link',
  reset:'Sync',link:'Link - H',left:'Angle - Left',right:'Angle - Right',
  up:'Angle - Up',down:'Angle - Down',wind:'Wind',favicon:'Cell'
 };

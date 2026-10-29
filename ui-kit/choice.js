@@ -12,7 +12,7 @@ function createChoice(kind,{size='Md',state='Normal',label='Value',description='
   let hover=false;
   function paint(){
     const v=cpVariant(kind,{...(size?{Size:size}:{}),State:hover&&state==='Normal'?'Hover':state,Toggle:input.checked?'On':'Off',Description:description?'On':'Off'});
-    element.dataset.component=kind;element.dataset.sourceId=v.id;element.dataset.state=state;
+    element.dataset.component=kind;element.dataset.sourceId=v.id;element.dataset.state=v.p.State;
     cpStyle(element,{gap:v.gap+'px',opacity:v.style.opacity||'1'});cpStyle(title,v.label);cpStyle(desc,v.description);
     texts.style.gap=v.textGap+'px';input.disabled=state==='Disabled';
     visual.replaceChildren(cpVisual(v.visual));element.style.setProperty('--cp-mark-width',v.visual.box.width+'px');

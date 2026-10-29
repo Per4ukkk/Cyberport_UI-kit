@@ -818,6 +818,30 @@
         "width": 384,
         "height": 187,
         "context": "Загрузка\nЕсли происходит ошибка сервера, показываем сообщение."
+      },
+      {
+        "id": "01-left",
+        "box": [
+          58,
+          438,
+          419,
+          530
+        ],
+        "width": 361,
+        "height": 92,
+        "context": "Original PDF column"
+      },
+      {
+        "id": "01-right",
+        "box": [
+          527,
+          438,
+          888,
+          530
+        ],
+        "width": 361,
+        "height": 92,
+        "context": "Original PDF column"
       }
     ]
   },
@@ -951,24 +975,24 @@
         "box": [
           58,
           3361,
-          728,
-          3609
+          1060,
+          3610
         ],
-        "width": 670,
-        "height": 248,
-        "context": "Ширина поля должна быть в пределах 30 — 80 символов, то есть около 250 — 600 px. Узким\nполем неудобно пользоваться из-за частого переноса строк. Широкое поле допустимо\nтолько в WYSIWYG-редакторе (What You See Is What You Get)."
+        "width": 1002,
+        "height": 249,
+        "context": "Original PDF illustration; no editorial changes"
       },
       {
         "id": "12",
         "box": [
           58,
           3621,
-          641,
-          3861
+          1060,
+          3920
         ],
-        "width": 583,
-        "height": 240,
-        "context": "ндарсулг,а тжадка уюпсоье онт о щущением покоя, что искусство мое страдает от этого. Ни одного штриха не мог бы я сделать, а\nвсего сердца. Я\nникогда не был таким большим художником, как в эти минуты.\nсовсем один и\nНеправильно\nблаженствую в\nздешнем краю,\nсловно созданном"
+        "width": 1002,
+        "height": 299,
+        "context": "Original PDF illustration; no editorial changes"
       }
     ]
   },
@@ -1624,6 +1648,30 @@
         "width": 300,
         "height": 225,
         "context": "Verified manual crop"
+      },
+      {
+        "id": "02",
+        "box": [
+          58,
+          858,
+          546,
+          1085
+        ],
+        "width": 488,
+        "height": 227,
+        "context": "Original PDF illustration; no editorial changes"
+      },
+      {
+        "id": "03",
+        "box": [
+          58,
+          1206,
+          546,
+          1346
+        ],
+        "width": 488,
+        "height": 140,
+        "context": "Original PDF illustration; no editorial changes"
       }
     ]
   },

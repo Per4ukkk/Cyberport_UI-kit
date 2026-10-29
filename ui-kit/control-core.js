@@ -35,6 +35,13 @@ export function cpVisual(node) {
   draw(node,e,true);return e;
 }
 export function cpFlash(el){el.classList.remove('cp-flash');void el.offsetWidth;el.classList.add('cp-flash');}
+/** Reveal a row inside its own scroll container without moving the document. */
+export function cpScrollWithin(container,target,center=false){
+  const outer=container.getBoundingClientRect(),inner=target.getBoundingClientRect();
+  if(center)container.scrollTop+=inner.top-outer.top-(container.clientHeight-inner.height)/2;
+  else if(inner.top<outer.top)container.scrollTop+=inner.top-outer.top;
+  else if(inner.bottom>outer.bottom)container.scrollTop+=inner.bottom-outer.bottom;
+}
 export function cpPopup(anchor,popup){
   const place=()=>{
     if(popup.hidden)return;

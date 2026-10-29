@@ -1,0 +1,125 @@
+{
+  "policy": "Text transcribed from the supplied PDFs without rewriting. Update only after explicit user authorization and PDF review. Formatting and internal link destinations may adapt to HTML.",
+  "articles": [
+    {
+      "slug": "badge",
+      "source": "Описание UI-kit/Бадж.pdf",
+      "pdfSha256": "639acf9c81c1950b8dd49d6696c11a4110e2ddebe6ed04601a05b794f6699bfb",
+      "markdownSha256": "27d7db5047a7f3d85044677d5be3d1636b50dff636a7e370442b119e9b1d90e0"
+    },
+    {
+      "slug": "validation",
+      "source": "Описание UI-kit/Валидация.pdf",
+      "pdfSha256": "f5f86ea6304d54074dba00c8736e69cdf4ee6454350b1520e39c61dd57f5d8bd",
+      "markdownSha256": "6c5668a321bac156a59b741da4193013e94d8b1cc83ea39153ce26edc3050730"
+    },
+    {
+      "slug": "menu-button",
+      "source": "Описание UI-kit/Действия/Кнопка-меню.pdf",
+      "pdfSha256": "00c5ec9a0e05a8aad430cd9c883c787ed4ac1a1fd927ae905197ab0f878ddbb2",
+      "markdownSha256": "87e5eb319f7359d64f9a031614927ad132b952dfb5118146ecbb5a86f878357a"
+    },
+    {
+      "slug": "button",
+      "source": "Описание UI-kit/Действия/Кнопка.pdf",
+      "pdfSha256": "a64456019dff78842a11a95470ff10a257ccecd613e91921a26054b1ffe21017",
+      "markdownSha256": "cf25c0cfed5ef99f825a78cf2561a4077ac12385f6497caa023430e07a80b784"
+    },
+    {
+      "slug": "cards",
+      "source": "Описание UI-kit/Карточки.pdf",
+      "pdfSha256": "a7e81bc9fbd264d97c214d739fcda7c05058dae14b5317e7c8ce70e0e6d55eea",
+      "markdownSha256": "2f458c78088f29c46a603906d93bd4b459d5b0f6848768d855fdc87b5227d440"
+    },
+    {
+      "slug": "combobox",
+      "source": "Описание UI-kit/Поля/Комбобокс.pdf",
+      "pdfSha256": "9c1b0f3a22ac58ff94baa827d8daf733f620feb192443407b8f3011b6020b1e5",
+      "markdownSha256": "c7585d59221e0acbda39b91015a55e71a29dee1f407cdbd2b9c79b499e280710"
+    },
+    {
+      "slug": "textarea",
+      "source": "Описание UI-kit/Поля/Многострочное поле.pdf",
+      "pdfSha256": "0fa4c859d3b59c797c6bf5769287d5aa0aa5378b4dbcf361916877aa428428c5",
+      "markdownSha256": "305dbc41be4a3ea12d3d25e3f77fef7ec7670e4dbafc82111f0b53ae2b1dca3e"
+    },
+    {
+      "slug": "input",
+      "source": "Описание UI-kit/Поля/Поле ввода.pdf",
+      "pdfSha256": "04c6fadc4c173723395c878f654711ef5bb1a63e31b26672d1c6e0718f7af7e8",
+      "markdownSha256": "4a4bec086ff4f90100a98bbc72f37c2bb2c4b875162547bf2495cd5b48ae65f9"
+    },
+    {
+      "slug": "time",
+      "source": "Описание UI-kit/Поля/Поле с временем.pdf",
+      "pdfSha256": "23bdafcfc658e667d2e7059f8abdfe80dc565936c143f768e1751328f80b558d",
+      "markdownSha256": "8c3726d149055749b21f2ea638ab45f5fa23e3aba0c6e5c1ac926a22bec8d970"
+    },
+    {
+      "slug": "date",
+      "source": "Описание UI-kit/Поля/Поле с датой.pdf",
+      "pdfSha256": "0bba2fdf3d98eeb79d7e6b1443e1234697a66b1fc43875cf5e68835efca53cfc",
+      "markdownSha256": "20b85936cea7fa7d3d986441f1cdc49dfacb0dd407afd82fc6f0dda763bf9add"
+    },
+    {
+      "slug": "mask",
+      "source": "Описание UI-kit/Поля/Поле с маской.pdf",
+      "pdfSha256": "fdf403f5b46206799d0c219cf223f71df6d0331d189f18123a33d62a6d243967",
+      "markdownSha256": "3d7b062f47fe79f1d08cad843ccaf256e728be19852ff09f3e3b98a6c09e87f4"
+    },
+    {
+      "slug": "phone",
+      "source": "Описание UI-kit/Поля/Поле с телефоном.pdf",
+      "pdfSha256": "2d6f5e778a310e0ce514016739d1fd74848e80838acc360d024c836ad12b9781",
+      "markdownSha256": "8d09267ca5b6aa9cbcee9ae7b4a2112ed1bdc178e271e13aff65b0b01f1bd411"
+    },
+    {
+      "slug": "token-input",
+      "source": "Описание UI-kit/Поля/Поле с токенами.pdf",
+      "pdfSha256": "ab55b27069ed11ba30d81b6701109031a2142f78f1aa2203b1550d05dba19a84",
+      "markdownSha256": "eceb341e24cb7d7f8d6695536d8bda0f802259ae4b2f5ba29397523ce4607ac6"
+    },
+    {
+      "slug": "module",
+      "source": "Описание UI-kit/Токены/Модуль.pdf",
+      "pdfSha256": "2919e8467e650144b7f77520a46822719c06dc4e1fc7c4ecf3238be98bdb930a",
+      "markdownSha256": "13b52f01b4913a31bc044f5ecd0a84de13b523dc936e7b786711a3447e693032"
+    },
+    {
+      "slug": "spacing",
+      "source": "Описание UI-kit/Токены/Отступы.pdf",
+      "pdfSha256": "4578df539e5b816005d60f1c8f005634e91d692d369795ae53d4d59d9d215843",
+      "markdownSha256": "c8e47262781ce073105e291f3745440de3eb97dddd2af3ddd7730a4455371624"
+    },
+    {
+      "slug": "radius",
+      "source": "Описание UI-kit/Токены/Скругления.pdf",
+      "pdfSha256": "b70a7549b7c7f3237f7710c8dac6fd5ae17742d2563bf60a9aef0ff87a3577b8",
+      "markdownSha256": "16b7bb4c7cd8858a58cf719e874793c35a629ce1013e5498797c65a62e675e83"
+    },
+    {
+      "slug": "checkbox",
+      "source": "Описание UI-kit/Элементы выбора/Checkbox.pdf",
+      "pdfSha256": "0d1290c687ff30d52c24773d5a04443164de0f5992755e2200e74f06f5e1d8a7",
+      "markdownSha256": "6f19f0e4c0f1aa9842a5a9ad11e22069a3c80f3f36fd47c658bb791e55c928cf"
+    },
+    {
+      "slug": "radio",
+      "source": "Описание UI-kit/Элементы выбора/Radiobutton.pdf",
+      "pdfSha256": "bc18236200710593aba2d808860442b442c5b43720e7a76632aa4ae3c169ef81",
+      "markdownSha256": "14e26ee22d3e4b937cbdccf581556cab2112c231909e5ed15533791b07a9aef3"
+    },
+    {
+      "slug": "select",
+      "source": "Описание UI-kit/Элементы выбора/Select.pdf",
+      "pdfSha256": "051c1a884c191858762ad2114e67d6638bed47912d6c995d5ea990c9bb2224d3",
+      "markdownSha256": "6e0f95d7dd36fe61d71d973fce1aee811f941a798f188cdadeac1842f4a0190f"
+    },
+    {
+      "slug": "switch",
+      "source": "Описание UI-kit/Элементы выбора/Switch.pdf",
+      "pdfSha256": "dcbac00cac24be421f9d63ec540886d67792b6152fe6f5617337a6a9eb42adb6",
+      "markdownSha256": "e397742fc74d6151dc1c88c3d98ebb104a90b75989c5b58fff8828febded14d5"
+    }
+  ]
+}

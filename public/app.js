@@ -44,22 +44,6 @@ const headings=[...document.querySelectorAll('.prose h2,.prose h3')];
 if(headings.length&&'IntersectionObserver' in window){let visible=new Set();const observer=new IntersectionObserver(entries=>{for(const e of entries){if(e.isIntersecting)visible.add(e.target);else visible.delete(e.target);}const active=headings.find(h=>visible.has(h));if(active){document.querySelectorAll('.toc a').forEach(a=>{if(decodeURIComponent(a.hash.slice(1))===active.id)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}},{rootMargin:'-100px 0px -55% 0px',threshold:0});headings.forEach(h=>observer.observe(h));}
 document.querySelectorAll('.mobile-toc a').forEach(a=>a.addEventListener('click',()=>document.querySelector('.mobile-toc').open=false));
 
-// Links still open the source image when JavaScript is unavailable.
-const figureLinks=[...document.querySelectorAll('.prose .figure-link')];
-if(figureLinks.length){
- const viewer=document.createElement('dialog');viewer.className='figure-viewer';viewer.setAttribute('aria-labelledby','figure-view-title');
- const header=document.createElement('div');header.className='figure-view-header';
- const title=document.createElement('h2');title.id='figure-view-title';
- const close=iconButton('close','Закрыть иллюстрацию');close.classList.add('figure-view-close');
- const body=document.createElement('div');body.className='figure-view-body';body.tabIndex=0;body.setAttribute('role','region');body.setAttribute('aria-label','Иллюстрация в полном размере. Прокручивайте для просмотра.');
- const image=document.createElement('img');header.append(title,close);viewer.append(header,body);document.body.append(viewer);
- let origin;
- figureLinks.forEach(link=>link.addEventListener('click',e=>{if(e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;e.preventDefault();origin=link;const source=link.querySelector('img');title.textContent=source.alt;image.src=source.src;image.alt=source.alt;image.width=Number(source.getAttribute('width'));image.height=Number(source.getAttribute('height'));body.append(image);viewer.showModal();document.body.style.overflow='hidden';body.scrollLeft=0;body.scrollTop=0;}));
- close.addEventListener('click',()=>viewer.close());
- viewer.addEventListener('click',e=>{if(e.target===viewer){const b=viewer.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)viewer.close();}});
- viewer.addEventListener('close',()=>{document.body.style.overflow='';origin?.focus({preventScroll:true});});
-}
-
 const results=document.querySelector('#search-results');
 if(results){
  const field=document.querySelector('#content-search');

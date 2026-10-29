@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
 import {SITE_ICONS} from './site-icons.mjs';
 import {CONTROL_DATA} from '../ui-kit/control-data.js';
 const root=path.resolve(import.meta.dirname,'..');
@@ -15,7 +16,7 @@ const pdfs=(await walk(path.join(root,'Описание UI-kit'))).filter(p=>p.e
 assert.deepEqual(new Set(provenance.map(s=>path.join(root,s.source))),new Set(pdfs),'Every source PDF is mapped');
 assert.deepEqual(new Set((await fs.readdir(path.join(root,'content/articles'))).map(f=>f.replace(/\.md$/,''))),new Set(expected),'No lost articles');
 let links=0,images=0;
-for(const file of htmlFiles){const text=await fs.readFile(file,'utf8');const ids=[...text.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(ids.length,new Set(ids).size,`Duplicate ids: ${file}`);assert.equal((text.match(/<h1\b/g)||[]).length,1,`One h1: ${file}`);assert(!/\(cid:\d+\)|Cool.Score|напишу правее|Авторская заметка/i.test(text),`Export artifacts: ${file}`);
+for(const file of htmlFiles){const text=await fs.readFile(file,'utf8');const ids=[...text.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(ids.length,new Set(ids).size,`Duplicate ids: ${file}`);assert.equal((text.match(/<h1\b/g)||[]).length,1,`One h1: ${file}`);assert(!/\(cid:\d+\)|Cool.Score/i.test(text),`Export artifacts: ${file}`);
  for(const m of text.matchAll(/<(a|img)\b[^>]*\b(href|src)="([^"]+)"[^>]*>/g)){
   const url=m[3].replace(/&amp;/g,'&');if(/^(https?:|mailto:)/.test(url))continue;
   const [pathname,fragment]=url.split('#');let target=pathname?path.join(dist,decodeURIComponent(pathname)):file;
@@ -25,6 +26,26 @@ for(const file of htmlFiles){const text=await fs.readFile(file,'utf8');const ids
   if(m[1]==='img'){images++;assert(/\balt="[^"]*"/.test(m[0]),`Missing image alt: ${file}`);}else links++;
  }
 }
+// Approved transcriptions retain PDF wording. Layout and links must not alter the text.
+const sourceText=JSON.parse(await fs.readFile(path.join(root,'content/pdf-text-lock.json'),'utf8'));
+const normalizeText=s=>s.replace(/\s+/g,' ').trim();
+const unescape=s=>s.replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
+assert.deepEqual(new Set(sourceText.articles.map(a=>a.slug)),new Set(expected),'Every article has a PDF transcription');
+for(const article of sourceText.articles){
+ const md=await fs.readFile(path.join(root,`content/articles/${article.slug}.md`),'utf8');
+ assert.equal(createHash('sha256').update(md).digest('hex'),article.markdownSha256,`Approved PDF text: ${article.slug}`);
+ assert.equal(createHash('sha256').update(await fs.readFile(path.join(root,article.source))).digest('hex'),article.pdfSha256,`PDF updated; recheck transcription: ${article.slug}`);
+ const html=await fs.readFile(path.join(dist,`docs/${article.slug}/index.html`),'utf8');
+ const prose=html.match(/<div class="prose">([\s\S]*?)<\/div><nav class="article-pagination"/)[1];
+ const actual=normalizeText(unescape(prose.replace(/<\/(?:p|h[23]|li|figure)>/g,' ').replace(/<[^>]+>/g,'')));
+ const expectedText=normalizeText(md.split('\n').slice(1).join('\n').replace(/^!\[.*\]\(.+\)$/gm,'').replace(/^#{2,3} |^(?:- |\d+\. )/gm,'').replace(/\[([^\]]+)\]\([^)]+\)/g,'$1').replace(/\*\*/g,''));
+ assert.equal(actual,expectedText,`Rendered article matches PDF transcription: ${article.slug}`);
+ assert(!/<a[^>]*class="figure-link"|figure-zoom|figure-viewer/.test(html),`Static illustrations: ${article.slug}`);
+}
+const home=await fs.readFile(path.join(dist,'index.html'),'utf8');
+for(const mail of ['TSeRoshchupkin@sberbank.ru','KAKostycheva@sberbank.ru'])assert(home.includes(`href="mailto:${mail}"`),`Contact link: ${mail}`);
+const resources=JSON.parse(await fs.readFile(path.join(root,'content/resources.json'),'utf8'));
+for(const resource of resources)assert(home.includes(`href="${resource.url.replace(/&/g,'&amp;')}"`),`Resource link: ${resource.label}`);
 const search=JSON.parse(await fs.readFile(path.join(dist,'search-index.json'),'utf8'));assert.equal(search.length,21);for(const a of search){assert(a.sections.some(s=>s.text.trim()),`Search content: ${a.slug}`);await fs.access(path.join(dist,a.url?`${a.url}/index.html`:`docs/${a.slug}/index.html`));}
 // The interactive examples also need their local module, icon and font dependencies.
 let assets=0;
@@ -43,5 +64,5 @@ const embedded=new Map([...iconCSS.matchAll(/\.(cp-original-\d+)\{mask-image:url
 for(const [original,key] of Object.entries(CONTROL_DATA.icons))assert.deepEqual(embedded.get(key),await fs.readFile(path.join(root,`Icons/Icons24/${original}.svg`)),`Original component icon: ${original}`);
 for(const file of files.filter(f=>f.startsWith(path.join(dist,'ui-kit')+path.sep)&&/\.(js|css)$/.test(f)&&path.basename(f)!=='fonts.css'))assert.deepEqual(await fs.readFile(file),await fs.readFile(path.join(root,'ui-kit',path.basename(file))),`Unmodified library runtime: ${file}`);
 assert.deepEqual(await fs.readFile(path.join(dist,'favicon.svg')),await fs.readFile(path.join(root,'Icons/Icons24/24 Linear / Cell.svg')),'Original favicon');
-assert.deepEqual(await fs.readFile(path.join(dist,'assets/brand/chat.svg')),await fs.readFile(path.join(root,'Icons/Icons24/24 Linear / Chat.svg')),'Original chat icon');
-console.log(`PASS: ${expected.length} articles / ${pdfs.length} PDFs; ${htmlFiles.length} HTML pages; ${links} internal links, ${images} image references and ${assets} runtime references; anchors, alt text, IDs, search index, original icons and unmodified ui-kit runtime.`);
+assert.deepEqual(await fs.readFile(path.join(dist,'assets/brand/comment.svg')),await fs.readFile(path.join(root,'Icons/Icons24/24 Linear / Comment.svg')),'Original comment icon');
+console.log(`PASS: ${expected.length} articles / ${pdfs.length} PDFs; ${htmlFiles.length} HTML pages; ${links} internal links, ${images} image references and ${assets} runtime references; PDF text fidelity, static illustrations, contact/resource links, anchors, alt text, IDs, search index, original icons and unmodified ui-kit runtime.`);

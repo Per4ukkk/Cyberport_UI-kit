@@ -32,7 +32,7 @@ export function createField({family='Field',size='Md',state='Normal',label='Valu
     if(clearable&&input.value){
       accessory.hidden=false;const clear=cpElement('button','cp-field-icon-button cp-field-clear');clear.type='button';clear.disabled=input.disabled;clear.setAttribute('aria-label','Очистить '+(label||ariaLabel||placeholder));clear.append(cpIcon('24 Linear / Cross - Large',size==='Lg'?24:20));
       clear.addEventListener('pointerdown',e=>e.preventDefault());clear.addEventListener('click',()=>{input.value='';input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));input.focus();});accessory.append(clear);accessory.classList.toggle('cp-clear-on-hover',clearOnHover);
-    }else if(icon){accessory.hidden=false;accessory.append(cpIcon(icon,size==='Lg'?24:size==='Sm'?16:20));}
+    }else if(icon){const name=typeof icon==='function'?icon():icon;accessory.hidden=false;if(!(input.disabled&&/Angle - (Up|Down)$/.test(name)))accessory.append(cpIcon(name,size==='Lg'?24:size==='Sm'?16:20));}
     // Icon combinations have their own markup: plain-field padding cannot be reused.
     const markup=family==='Field'?cpVariant('FieldMarkup',{Size:size,'Left Icon':leftIcon?'Yes':'No','Right Icon':accessory.hidden?'No':'Yes',Tokens:'No'}).node:null;
     if(markup){element.dataset.markupId=markup.id;shell.style.padding=markup.style.padding;shell.style.gap=markup.layout.itemSpacing+'px';}

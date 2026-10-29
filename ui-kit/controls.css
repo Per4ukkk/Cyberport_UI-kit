@@ -123,3 +123,7 @@ nav{flex-wrap:wrap;}
 .cp-mask-caret{position:absolute;top:0;height:1em;border-left:1px solid #262c31;animation:cp-caret-blink 1s step-end infinite}
 @keyframes cp-caret-blink{50%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.cp-mask-caret{animation:none}}
+
+/* Disabled fields retain their layout but expose no interactive arrow or cursor. */
+.cp-field[data-disabled=true] .cp-field-shell,.cp-select-value:disabled{cursor:default}
+.cp-field[data-disabled=true] .cp-field-accessory{cursor:default!important;pointer-events:none}

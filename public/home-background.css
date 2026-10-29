@@ -1,0 +1,35 @@
+/* Homepage decoration. The unmodified 676 × 676 SVG is from Figma node 95:230. */
+:root:has(>body.home-page){
+ background:radial-gradient(ellipse at 97% 12%,#edf7ff 0,transparent 44%),radial-gradient(ellipse at 0 90%,#e9faf8 0,transparent 40%),linear-gradient(145deg,#fff 32%,#f6fcff 73%,#edfbf9);
+ background-attachment:fixed;overscroll-behavior-y:none;
+}
+.home-decoration{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:-1;}
+.gear{
+ --gear-art:url('/assets/brand/gear-cog.svg');--depth:6px;--rim:linear-gradient(140deg,#fff 2%,#e3f4ff 30%,#8bbbdc 70%,#d2e9f3);
+ --face:linear-gradient(135deg,#f4fbff 2%,#cbe7f7 30%,#d1e1f4 54%,#e7f6fa 76%,#c3e8ed);
+ --side:linear-gradient(140deg,#c3e3f2,#84b5d4 72%,#cce7f0);
+ position:absolute;width:720px;height:720px;opacity:.8;
+}
+.gear-rotor{display:block;position:relative;width:100%;height:100%;animation:gear-turn 160s linear infinite;transform-origin:50% 50%;filter:drop-shadow(0 22px 24px #4c91bb1c);}
+.gear-rotor::before,.gear-rotor::after,.gear-face{
+ content:"";position:absolute;inset:0;-webkit-mask:var(--gear-art) center/contain no-repeat;mask:var(--gear-art) center/contain no-repeat;
+}
+.gear-rotor::before{background:var(--side);transform:translateY(var(--depth));}
+.gear-rotor::after{background:var(--rim);}
+.gear-face{inset:2px;z-index:1;background:var(--face);}
+.gear-face::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 18%,#ffffff6e 34%,#fff0 50%,#ffffff40 72%,transparent 81%);}
+.gear-top{right:calc(50% - 1030px);top:-168px;}
+.gear-top .gear-rotor{animation-delay:-8s;}
+.gear-left{width:680px;height:680px;left:calc(50% - 1180px);top:610px;opacity:.6;--face:linear-gradient(145deg,#e9f8fc 12%,#c2e7ef 45%,#e2f5ef 78%,#c9e9e5);}
+.gear-left .gear-rotor{animation-duration:184s;animation-direction:reverse;animation-delay:-24s;}
+@keyframes gear-turn{to{transform:rotate(360deg)}}
+@media(min-width:1600px){.gear-top{top:-100px}.gear-left{top:560px}}
+@media(max-width:1100px){.gear-top{right:-550px;top:-144px;opacity:.55}.gear-left{left:-648px;top:700px;opacity:.48}}
+@media(max-width:600px){
+ :root:has(>body.home-page){background:radial-gradient(ellipse at 100% 0,#eaf7ff,transparent 40%),linear-gradient(150deg,#fff 30%,#f2fcfc)}
+ .gear{width:440px;height:440px;--depth:5px;opacity:.5}
+ .gear-top{right:-350px;top:-200px;opacity:.32}.gear-left{width:400px;height:400px;left:-392px;top:610px;opacity:.32}
+ .gear-rotor{filter:drop-shadow(0 12px 18px #4c91bb15)}.gear-face{inset:1.5px}
+}
+@media(prefers-reduced-motion:reduce){.gear-rotor{animation:none;transform:rotate(-8deg)}.gear-left .gear-rotor{transform:rotate(14deg)}}
+@media print{.home-decoration{display:none}}
