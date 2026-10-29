@@ -18,7 +18,8 @@
 .gear-rotor::after{background:var(--rim);}
 .gear-face{inset:2px;z-index:1;background:var(--face);}
 .gear-face::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 18%,#ffffff6e 34%,#fff0 50%,#ffffff40 72%,transparent 81%);}
-.gear-top{right:calc(50% - 1030px);top:-168px;}
+/* Keep the centre opening cropped even when the viewport grows beyond the content column. */
+.gear-top{right:min(calc(50% - 1070px),-320px);top:-168px;}
 .gear-top .gear-rotor{animation-delay:-8s;}
 .gear-left{width:680px;height:680px;left:calc(50% - 1180px);top:610px;opacity:.6;--face:linear-gradient(145deg,#e9f8fc 12%,#c2e7ef 45%,#e2f5ef 78%,#c9e9e5);}
 .gear-left .gear-rotor{animation-duration:184s;animation-direction:reverse;animation-delay:-24s;}
