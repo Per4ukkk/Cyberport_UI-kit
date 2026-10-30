@@ -5,7 +5,7 @@ import path from 'node:path';
 export const SITE_ICONS={
  search:'Search',menu:'Bars',close:'Cross - Large',external:'Extenal Link',
  reset:'Sync',link:'Link - H',left:'Angle - Left',right:'Angle - Right',
- up:'Angle - Up',down:'Angle - Down',wind:'Wind',favicon:'Cell'
+ up:'Angle - Up',down:'Angle - Down',wind:'Wind',favicon:'Cell',plus:'Plus'
 };
 export function siteIcon(name){
  if(!SITE_ICONS[name])throw Error(`Unknown site icon: ${name}`);

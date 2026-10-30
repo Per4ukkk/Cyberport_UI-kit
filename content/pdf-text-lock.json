@@ -47,7 +47,16 @@
       "slug": "input",
       "source": "Описание UI-kit/Поля/Поле ввода.pdf",
       "pdfSha256": "04c6fadc4c173723395c878f654711ef5bb1a63e31b26672d1c6e0718f7af7e8",
-      "markdownSha256": "4a4bec086ff4f90100a98bbc72f37c2bb2c4b875162547bf2495cd5b48ae65f9"
+      "markdownSha256": "aabbfda6b8ece1b0f12b691d585dbefc22d92faee7f0821b7ad007332877c4d9",
+      "approvedCorrections": [
+        {
+          "date": "2026-10-30",
+          "location": "Final label after illustration 15, paragraph 23",
+          "from": "Неправильно",
+          "to": "Правильно",
+          "authorization": "Explicit user browser comment on the input component page."
+        }
+      ]
     },
     {
       "slug": "time",

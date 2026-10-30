@@ -37,3 +37,7 @@ node_modules/
 !/Шрифты/WEB/
 /Шрифты/WEB/*
 !/Шрифты/WEB/*.woff2
+
+# Local feature work: source-backed review documents and documentation resources.
+!/scripts/documentation.mjs
+!/content/design-review/sources/*.pdf

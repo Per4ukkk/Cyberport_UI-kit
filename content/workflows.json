@@ -1,0 +1,6 @@
+[
+  {"id":"review","url":"/design-review/","title":"Дизайн-ревью","description":"Чек-листы оценки решения и подготовки макетов к handoff."},
+  {"id":"handoff","url":"/design-review/handoff/","title":"Подготовка к Handoff","description":"Проверка макетов перед передачей в разработку."},
+  {"id":"getting-started","url":"/getting-started/","title":"Подключение библиотеки","description":"Код компонентов, параметры API и подключение библиотеки."},
+  {"id":"ai","url":"/ai/","title":"Для нейросети","description":"Готовый промпт и актуальные правила по одной ссылке."}
+]

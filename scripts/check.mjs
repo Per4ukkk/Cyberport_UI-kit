@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {SITE_ICONS} from './site-icons.mjs';
 import {CONTROL_DATA} from '../ui-kit/control-data.js';
+import {componentDocs,exampleCode,componentFeatures,featureCode} from '../public/component-docs.js';
 const root=path.resolve(import.meta.dirname,'..');
 const dist=path.join(root,'dist');
 async function walk(dir){const entries=await fs.readdir(dir,{withFileTypes:true});return(await Promise.all(entries.map(e=>e.isDirectory()?walk(path.join(dir,e.name)):path.join(dir,e.name)))).flat();}
@@ -46,7 +47,7 @@ const home=await fs.readFile(path.join(dist,'index.html'),'utf8');
 for(const mail of ['TSeRoshchupkin@sberbank.ru','KAKostycheva@sberbank.ru'])assert(home.includes(`href="mailto:${mail}"`),`Contact link: ${mail}`);
 const resources=JSON.parse(await fs.readFile(path.join(root,'content/resources.json'),'utf8'));
 for(const resource of resources)assert(home.includes(`href="${resource.url.replace(/&/g,'&amp;')}"`),`Resource link: ${resource.label}`);
-const search=JSON.parse(await fs.readFile(path.join(dist,'search-index.json'),'utf8'));assert.equal(search.length,21);for(const a of search){assert(a.sections.some(s=>s.text.trim()),`Search content: ${a.slug}`);await fs.access(path.join(dist,a.url?`${a.url}/index.html`:`docs/${a.slug}/index.html`));}
+const search=JSON.parse(await fs.readFile(path.join(dist,'search-index.json'),'utf8'));assert.equal(search.length,25);for(const a of search){assert(a.sections.some(s=>s.text.trim()),`Search content: ${a.slug}`);await fs.access(path.join(dist,a.url?`${a.url}/index.html`:`docs/${a.slug}/index.html`));}
 // The interactive examples also need their local module, icon and font dependencies.
 let assets=0;
 for(const file of files.filter(f=>/\.(css|js|html)$/.test(f))){
@@ -65,4 +66,66 @@ for(const [original,key] of Object.entries(CONTROL_DATA.icons))assert.deepEqual(
 for(const file of files.filter(f=>f.startsWith(path.join(dist,'ui-kit')+path.sep)&&/\.(js|css)$/.test(f)&&path.basename(f)!=='fonts.css'))assert.deepEqual(await fs.readFile(file),await fs.readFile(path.join(root,'ui-kit',path.basename(file))),`Unmodified library runtime: ${file}`);
 assert.deepEqual(await fs.readFile(path.join(dist,'favicon.svg')),await fs.readFile(path.join(root,'Icons/Icons24/24 Linear / Cell.svg')),'Original favicon');
 assert.deepEqual(await fs.readFile(path.join(dist,'assets/brand/comment.svg')),await fs.readFile(path.join(root,'Icons/Icons24/24 Linear / Comment.svg')),'Original comment icon');
+// Established review rules remain locked, both in the rendered page and plain text.
+const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
+const reviewLock=JSON.parse(await fs.readFile(path.join(root,'content/design-review/sources.json'),'utf8'));
+for(const doc of reviewLock.documents){
+ const md=await fs.readFile(path.join(root,`content/design-review/${doc.slug}.md`),'utf8');
+ const pdf=await fs.readFile(path.join(root,doc.source));
+ assert.equal(sha(md),doc.markdownSha256,`Established review wording: ${doc.slug}`);
+ assert.equal(sha(pdf),doc.pdfSha256,`Original review PDF: ${doc.slug}`);
+ const route=doc.slug==='checklist'?'design-review':'design-review/handoff';
+ assert.equal(await fs.readFile(path.join(dist,route,'index.md'),'utf8'),md);
+ assert.deepEqual(await fs.readFile(path.join(dist,`design-review/sources/${doc.slug}.pdf`)),pdf);
+ const page=await fs.readFile(path.join(dist,route,'index.html'),'utf8');
+ const prose=page.match(/data-review-document="[^"]+">([\s\S]*?)<\/div><nav class="review-next"/)[1];
+ const actual=normalizeText(unescape(prose.replace(/<\/(?:h2|li)>/g,' ').replace(/<[^>]+>/g,'')));
+ const expectedText=normalizeText(md.split('\n').slice(1).join('\n').replace(/^## |^- /gm,'').replace(/\*\*/g,''));
+ assert.equal(actual,expectedText,`Review HTML exactly follows source wording: ${doc.slug}`);
+}
+// Every promised machine endpoint is a real file with matching provenance.
+const manifest=JSON.parse(await fs.readFile(path.join(dist,'ai/manifest.json'),'utf8'));
+assert.equal(manifest.components.length,20);
+assert.equal(manifest.components.filter(c=>c.factory).length,15);
+assert.equal(manifest.review.length,2);
+for(const url of Object.values(manifest.entrypoints))await fs.access(path.join(dist,url));
+for(const file of [...manifest.sourceFiles,...manifest.assetFiles]){
+ const bytes=await fs.readFile(path.join(dist,file.url));
+ assert.equal(bytes.length,file.bytes,`Published bytes: ${file.url}`);
+ assert.equal(sha(bytes),file.sha256,`Published SHA: ${file.url}`);
+}
+const context=await fs.readFile(path.join(dist,'ai/context.md'),'utf8');
+assert.equal(context,await fs.readFile(path.join(dist,'llms-full.txt'),'utf8'));
+for(const component of manifest.components){
+ const md=await fs.readFile(path.join(dist,component.markdown),'utf8');
+ assert.equal(sha(md),component.sha256,`Component documentation SHA: ${component.id}`);
+ assert(context.includes(await fs.readFile(path.join(dist,component.rules),'utf8')),`Full rules: ${component.id}`);
+ const doc=componentDocs[component.id];
+ if(doc){
+  const page=await fs.readFile(path.join(dist,component.page,'index.html'),'utf8');
+  const example=page.match(/<code id="example-code"[^>]*>([\s\S]*?)<\/code>/)[1];
+  assert.equal(unescape(example.replace(/<[^>]+>/g,'')),exampleCode(component.id),`Same recipe for live demo and copyable code: ${component.id}`);
+  assert(page.includes('role="tabpanel" aria-labelledby="tab-code"'),`Accessible code panel: ${component.id}`);
+ }
+}
+const workflows=JSON.parse(await fs.readFile(path.join(root,'content/workflows.json'),'utf8'));
+const homeWorkflow=home.match(/<section class="home-workflows"[\s\S]*?<\/section><\/main>/)?.[0]||home.slice(home.indexOf('<section class="home-workflows"'));
+const navWorkflow=home.match(/<div class="nav-group nav-workflow">([\s\S]*?)<\/div>/)[1];
+const workflowLinks=html=>[...html.matchAll(/<a href="([^"]+)"[^>]*>([^<]+)<\/a>/g)].filter(m=>workflows.some(item=>item.url===m[1])).map(m=>[m[1],unescape(m[2])]);
+assert.deepEqual(workflowLinks(homeWorkflow),workflows.map(item=>[item.url,item.title]),'Homepage workflow contents');
+assert.deepEqual(workflowLinks(navWorkflow),workflows.map(item=>[item.url,item.title]),'Navigation workflow contents');
+assert(!homeWorkflow.includes('resource-grid'),'Homepage workflows use catalog layout');
+const aiPage=await fs.readFile(path.join(dist,'ai/index.html'),'utf8');
+assert(!aiPage.includes('local-context-note'),'No local-only note');
+for(const [kind,features]of Object.entries(componentFeatures)){
+ const md=await fs.readFile(path.join(dist,`ai/components/${kind}.md`),'utf8');
+ for(const feature of features)assert(md.includes(featureCode(kind,feature)),`Optional API example: ${kind}/${feature.title}`);
+}
+assert((await fs.stat(path.join(dist,manifest.download))).size>0,'Downloadable library exists');
+for(const mode of ['review','handoff','code']){
+ const prompt=await fs.readFile(path.join(dist,`ai/prompt-${mode}.txt`),'utf8');
+ assert(prompt.includes('https://cyberport-ui-kit.vercel.app/ai/manifest.json'),'Prompt uses the public site');
+ assert(!/localhost|127\.0\.0\.1|BASE_URL/.test(prompt),'No local host or placeholder in copyable prompt');
+}
 console.log(`PASS: ${expected.length} articles / ${pdfs.length} PDFs; ${htmlFiles.length} HTML pages; ${links} internal links, ${images} image references and ${assets} runtime references; PDF text fidelity, static illustrations, contact/resource links, anchors, alt text, IDs, search index, original icons and unmodified ui-kit runtime.`);
+console.log('PASS: 2 locked review documents, 15 component code panels, AI index/context, source hashes and public-site prompts.');

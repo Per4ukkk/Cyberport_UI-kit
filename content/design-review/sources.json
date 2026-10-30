@@ -1,0 +1,23 @@
+{
+  "policy": "Do not change the established rules without explicit user authorization. Visible text must match the supplied PDFs.",
+  "documents": [
+    {
+      "slug": "checklist",
+      "title": "Чек-лист дизайн-ревью",
+      "originalSource": "Design review/Чек-лист дизайн-ревью.pdf",
+      "source": "content/design-review/sources/checklist.pdf",
+      "pdfSha256": "55640b60c48b6da63e92e7b604f0ac2a7adf181c00c32ef7fe18b43b7eaa943b",
+      "markdownSha256": "e6759e1d040b5817635dbdbd381fdf0ba747b9d13040f8654ee902e93c24edfe",
+      "method": "Visual transcription verified against supplied PDF; wording unchanged."
+    },
+    {
+      "slug": "handoff",
+      "title": "Чек-лист: Подготовка макетов к Handoff",
+      "originalSource": "Design review/✅ Чек-лист: Подготовка макетов к Handoff.pdf",
+      "source": "content/design-review/sources/handoff.pdf",
+      "pdfSha256": "0849a0543100cb339354a990087a7ac851dca0d15eb0848be3e1e5c7620990f6",
+      "markdownSha256": "b19f03217cb526251be9edc92a2eae5a918d71e9c007063cd3ccb26959f7fb59",
+      "method": "Visual transcription verified against supplied PDF; wording unchanged."
+    }
+  ]
+}
