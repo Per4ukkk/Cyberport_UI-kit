@@ -47,7 +47,11 @@ const home=await fs.readFile(path.join(dist,'index.html'),'utf8');
 for(const mail of ['TSeRoshchupkin@sberbank.ru','KAKostycheva@sberbank.ru'])assert(home.includes(`href="mailto:${mail}"`),`Contact link: ${mail}`);
 const resources=JSON.parse(await fs.readFile(path.join(root,'content/resources.json'),'utf8'));
 for(const resource of resources)assert(home.includes(`href="${resource.url.replace(/&/g,'&amp;')}"`),`Resource link: ${resource.label}`);
-const search=JSON.parse(await fs.readFile(path.join(dist,'search-index.json'),'utf8'));assert.equal(search.length,25);for(const a of search){assert(a.sections.some(s=>s.text.trim()),`Search content: ${a.slug}`);await fs.access(path.join(dist,a.url?`${a.url}/index.html`:`docs/${a.slug}/index.html`));}
+const search=JSON.parse(await fs.readFile(path.join(dist,'search-index.json'),'utf8'));assert.equal(search.length,24);for(const a of search){assert(a.sections.some(s=>s.text.trim()),`Search content: ${a.slug}`);await fs.access(path.join(dist,a.url?`${a.url}/index.html`:`docs/${a.slug}/index.html`));}
+assert(!search.some(entry=>entry.slug==='getting-started'||entry.url==='/getting-started/'),'Integration guide removed from search');
+assert(!(await fs.stat(path.join(dist,'getting-started')).catch(()=>null)),'Integration guide is not published');
+assert(!(await fs.stat(path.join(dist,'ai/prompt-code.txt')).catch(()=>null)),'Development prompt is not published');
+for(const file of htmlFiles){const html=await fs.readFile(file,'utf8');assert(!/href="\/getting-started\/|id="component-code"|data-component-tab|Для фронтенд-разработчиков/.test(html),`No developer documentation in UI: ${file}`);}
 // The interactive examples also need their local module, icon and font dependencies.
 let assets=0;
 for(const file of files.filter(f=>/\.(css|js|html)$/.test(f))){
@@ -88,6 +92,10 @@ const manifest=JSON.parse(await fs.readFile(path.join(dist,'ai/manifest.json'),'
 assert.equal(manifest.components.length,20);
 assert.equal(manifest.components.filter(c=>c.factory).length,15);
 assert.equal(manifest.review.length,2);
+assert.equal(manifest.prototypeCode.status,'experimental');
+assert.equal(manifest.prototypeCode.purpose,'clickable-prototypes-only');
+assert.equal(manifest.prototypeCode.productionLibrary.documentedHere,false);
+assert.equal(manifest.entrypoints.prototyping,'/ai/prototyping.md');
 for(const url of Object.values(manifest.entrypoints))await fs.access(path.join(dist,url));
 for(const file of [...manifest.sourceFiles,...manifest.assetFiles]){
  const bytes=await fs.readFile(path.join(dist,file.url));
@@ -103,9 +111,10 @@ for(const component of manifest.components){
  const doc=componentDocs[component.id];
  if(doc){
   const page=await fs.readFile(path.join(dist,component.page,'index.html'),'utf8');
-  const example=page.match(/<code id="example-code"[^>]*>([\s\S]*?)<\/code>/)[1];
-  assert.equal(unescape(example.replace(/<[^>]+>/g,'')),exampleCode(component.id),`Same recipe for live demo and copyable code: ${component.id}`);
-  assert(page.includes('role="tabpanel" aria-labelledby="tab-code"'),`Accessible code panel: ${component.id}`);
+  assert(md.includes(exampleCode(component.id)),`Machine example retains the live demo recipe: ${component.id}`);
+  assert(md.includes(manifest.prototypeCode.notice),`Prototype-only scope: ${component.id}`);
+  assert(md.includes(`/ai/sources/${doc.file}.txt`),`Machine source link: ${component.id}`);
+  assert(page.includes('id="component-description"')&&!page.includes('id="component-code"'),`Component description without code tabs: ${component.id}`);
  }
 }
 const workflows=JSON.parse(await fs.readFile(path.join(root,'content/workflows.json'),'utf8'));
@@ -117,15 +126,23 @@ assert.deepEqual(workflowLinks(navWorkflow),workflows.map(item=>[item.url,item.t
 assert(!homeWorkflow.includes('resource-grid'),'Homepage workflows use catalog layout');
 const aiPage=await fs.readFile(path.join(dist,'ai/index.html'),'utf8');
 assert(!aiPage.includes('local-context-note'),'No local-only note');
+const prompts=JSON.parse(aiPage.match(/id="prompt-templates">([\s\S]*?)<\/script>/)[1]);
+assert.deepEqual(Object.keys(prompts),['review','handoff','prototype']);
+assert(aiPage.includes('data-prompt-mode="prototype">Прототип</button>')&&!aiPage.includes('data-prompt-mode="code"'),'Prototype replaces development tab');
+assert(!aiPage.includes('href="/downloads/'),'Prototype source archive is kept in machine materials');
+for(const route of ['ai/guide.md','ai/context.md','llms.txt','ai/prototyping.md'])assert((await fs.readFile(path.join(dist,route),'utf8')).includes('внутреннем Storybook'),`Prototype scope in ${route}`);
+const prototypeGuide=await fs.readFile(path.join(dist,'ai/prototyping.md'),'utf8');
+assert(prototypeGuide.includes('Бизнес-требования')&&prototypeGuide.includes('JSON + PNG'),'Both prototype input paths');
 for(const [kind,features]of Object.entries(componentFeatures)){
  const md=await fs.readFile(path.join(dist,`ai/components/${kind}.md`),'utf8');
  for(const feature of features)assert(md.includes(featureCode(kind,feature)),`Optional API example: ${kind}/${feature.title}`);
 }
 assert((await fs.stat(path.join(dist,manifest.download))).size>0,'Downloadable library exists');
-for(const mode of ['review','handoff','code']){
+for(const mode of ['review','handoff','prototype']){
  const prompt=await fs.readFile(path.join(dist,`ai/prompt-${mode}.txt`),'utf8');
+ assert.equal(prompt,prompts[mode],`Copyable and plain-text prompt agree: ${mode}`);
  assert(prompt.includes('https://cyberport-ui-kit.vercel.app/ai/manifest.json'),'Prompt uses the public site');
  assert(!/localhost|127\.0\.0\.1|BASE_URL/.test(prompt),'No local host or placeholder in copyable prompt');
 }
 console.log(`PASS: ${expected.length} articles / ${pdfs.length} PDFs; ${htmlFiles.length} HTML pages; ${links} internal links, ${images} image references and ${assets} runtime references; PDF text fidelity, static illustrations, contact/resource links, anchors, alt text, IDs, search index, original icons and unmodified ui-kit runtime.`);
-console.log('PASS: 2 locked review documents, 15 component code panels, AI index/context, source hashes and public-site prompts.');
+console.log('PASS: 2 locked review documents; developer UI hidden; all 15 component APIs/examples and sources retained for AI prototypes; prototype scope and public-site prompts.');
