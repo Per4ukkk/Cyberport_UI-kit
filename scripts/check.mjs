@@ -96,6 +96,7 @@ assert.equal(manifest.prototypeCode.status,'experimental');
 assert.equal(manifest.prototypeCode.purpose,'clickable-prototypes-only');
 assert.equal(manifest.prototypeCode.productionLibrary.documentedHere,false);
 assert.equal(manifest.entrypoints.prototyping,'/ai/prototyping.md');
+assert.equal(manifest.entrypoints.icons,'/icons/index.json');
 for(const url of Object.values(manifest.entrypoints))await fs.access(path.join(dist,url));
 for(const file of [...manifest.sourceFiles,...manifest.assetFiles]){
  const bytes=await fs.readFile(path.join(dist,file.url));
@@ -138,6 +139,37 @@ for(const [kind,features]of Object.entries(componentFeatures)){
  for(const feature of features)assert(md.includes(featureCode(kind,feature)),`Optional API example: ${kind}/${feature.title}`);
 }
 assert((await fs.stat(path.join(dist,manifest.download))).size>0,'Downloadable library exists');
+// The complete original pack is discoverable and portable, without a public gallery.
+const iconIndexBytes=await fs.readFile(path.join(dist,manifest.icons.index));
+const iconIndex=JSON.parse(iconIndexBytes);
+const sourceIcons=(await walk(path.join(root,'Icons'))).filter(f=>f.toLowerCase().endsWith('.svg'));
+assert.equal(sha(iconIndexBytes),manifest.icons.indexSha256,'Icon index checksum');
+assert.equal(iconIndex.count,sourceIcons.length,'All source SVGs indexed');
+assert.equal(manifest.icons.count,sourceIcons.length);
+assert.equal(iconIndex.version,manifest.icons.version);
+assert.equal(new Set(iconIndex.icons.map(i=>i.id)).size,iconIndex.count,'Unique icon identifiers');
+assert.deepEqual(new Set(iconIndex.icons.map(i=>i.originalPath)),new Set(sourceIcons.map(f=>path.relative(root,f).split(path.sep).join('/'))),'Every SVG has provenance');
+const iconMarkdown=await fs.readFile(path.join(dist,manifest.icons.markdown),'utf8');
+for(const icon of iconIndex.icons){
+ const bytes=await fs.readFile(path.join(dist,icon.url));
+ assert.deepEqual(bytes,await fs.readFile(path.join(root,icon.originalPath)),`Original SVG bytes: ${icon.originalPath}`);
+ assert.equal(sha(bytes),icon.sha256);assert.equal(bytes.length,icon.bytes);
+ assert.equal(icon.url,'/icons/'+icon.file);assert.match(icon.file,/^svg\/[a-z0-9-]+\.svg$/);
+ assert(icon.width>0&&icon.height>0&&icon.name&&iconMarkdown.includes(icon.url));
+ assert(manifest.assetFiles.some(f=>f.url===icon.url&&f.sha256===icon.sha256),'Icon is in manifest assets');
+}
+function storedZipEntries(bytes){const entries=new Map();let offset=0;while(bytes.readUInt32LE(offset)===0x04034b50){assert.equal(bytes.readUInt16LE(offset+8),0,'Uncompressed ZIP entries');const length=bytes.readUInt32LE(offset+18),nameLength=bytes.readUInt16LE(offset+26),extraLength=bytes.readUInt16LE(offset+28),name=bytes.subarray(offset+30,offset+30+nameLength).toString('utf8'),start=offset+30+nameLength+extraLength;assert(!entries.has(name),'No duplicate ZIP paths');entries.set(name,bytes.subarray(start,start+length));offset=start+length;}return entries;}
+const iconArchiveBytes=await fs.readFile(path.join(dist,manifest.icons.download));
+assert.equal(sha(iconArchiveBytes),manifest.icons.archiveSha256);assert.equal(iconArchiveBytes.length,manifest.icons.archiveBytes);
+for(const archive of [iconArchiveBytes,await fs.readFile(path.join(dist,manifest.download))]){
+ const entries=storedZipEntries(archive);assert.deepEqual(entries.get('icons/index.json'),iconIndexBytes,'Portable icon catalog in both archives');
+ for(const icon of iconIndex.icons)assert.equal(sha(entries.get('icons/'+icon.file)),icon.sha256,`Portable SVG: ${icon.id}`);
+ assert(entries.get('icons/README.md')?.toString().includes('cpIcon'),'Actual factory icon limits documented');
+}
+for(const file of htmlFiles){const html=await fs.readFile(file,'utf8');assert(!/href="\/(?:icons\/|downloads\/cyberport-icons\.zip|__local\/icons)/.test(html),'No public icon gallery or navigation');}
+assert(!search.some(entry=>entry.slug==='icons'||entry.url?.startsWith('/icons/')),'No icon search section');
+assert(!(await fs.stat(path.join(dist,'__local')).catch(()=>null)),'Local review is outside the production build');
+for(const route of ['ai/guide.md','ai/prototyping.md','ai/prompt-prototype.txt','llms.txt'])assert((await fs.readFile(path.join(dist,route),'utf8')).includes('/icons/index.json'),`Icon discovery from ${route}`);
 for(const mode of ['review','handoff','prototype']){
  const prompt=await fs.readFile(path.join(dist,`ai/prompt-${mode}.txt`),'utf8');
  assert.equal(prompt,prompts[mode],`Copyable and plain-text prompt agree: ${mode}`);
@@ -146,3 +178,4 @@ for(const mode of ['review','handoff','prototype']){
 }
 console.log(`PASS: ${expected.length} articles / ${pdfs.length} PDFs; ${htmlFiles.length} HTML pages; ${links} internal links, ${images} image references and ${assets} runtime references; PDF text fidelity, static illustrations, contact/resource links, anchors, alt text, IDs, search index, original icons and unmodified ui-kit runtime.`);
 console.log('PASS: 2 locked review documents; developer UI hidden; all 15 component APIs/examples and sources retained for AI prototypes; prototype scope and public-site prompts.');
+console.log(`PASS: ${iconIndex.count} original SVG icons, complete JSON/Markdown indexes, both archives and machine-only discovery.`);

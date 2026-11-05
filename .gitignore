@@ -40,4 +40,5 @@ node_modules/
 
 # Local feature work: source-backed review documents and documentation resources.
 !/scripts/documentation.mjs
+!/scripts/icons.mjs
 !/content/design-review/sources/*.pdf

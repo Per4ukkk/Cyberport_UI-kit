@@ -12,6 +12,11 @@ http.createServer(async(req,res)=>{
   const decoded=decodeURIComponent(url.pathname);
   let target=path.resolve(root,'.'+decoded);
   if(!target.startsWith(root+path.sep)&&target!==root){res.writeHead(403);return res.end();}
+  // Review artifact lives outside dist and is never published by the static build.
+  if(decoded==='/__local/icons/'||decoded==='/__local/icons'){
+   const data=await fs.readFile(path.resolve(root,'../output/site/icon-review.html')).catch(()=>null);
+   if(data){res.writeHead(200,{'Content-Type':types['.html'],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(data);}
+  }
   let stat;try{stat=await fs.stat(target);}catch{}
   if(stat?.isDirectory()){
    if(!url.pathname.endsWith('/')){res.writeHead(308,{Location:url.pathname+'/'+url.search});return res.end();}

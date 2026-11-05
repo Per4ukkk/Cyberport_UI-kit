@@ -13,6 +13,8 @@
 
 Генерация материалов — scripts/documentation.mjs; интерфейс промптов — public/documentation.js/.css. Рецепты живых примеров и машинных примеров общие: public/component-docs.js. Версия материалов учитывает правила, runtime, ресурсы, API, инструкции и генератор документов. npm run check проверяет сохранность правил, скрытие интерфейса разработчиков, полноту материалов для прототипов, ссылки, контрольные суммы и публичный адрес промптов.
 
+Полный SVG-пак из Icons/ публикуется только как машинные материалы: /icons/index.json, /icons/index.md, /icons/README.md и /downloads/cyberport-icons.zip. Все SVG без изменения содержимого также входят в архив прототипа, в icons/svg/. Индекс сохраняет исходное имя, стиль, номинальный и фактический размер, путь, SHA-256 и размер файла; поле file разрешается относительно icons/index.json. Публикация не добавляет галерею, пункт меню или результаты поиска для людей. Локальный сервер умеет показывать проверочный output/site/icon-review.html по /__local/icons/; этот файл вне dist и в production-сборку не входит.
+
 Приёмы документации сверены с [Code panel в Storybook](https://storybook.js.org/docs/writing-docs/code-panel), [registry в shadcn/ui](https://ui.shadcn.com/docs/registry/getting-started) и [предложением llms.txt](https://llmstxt.org/). Сторонние фреймворки и npm-зависимости не добавлены.
 
 ## Запуск
