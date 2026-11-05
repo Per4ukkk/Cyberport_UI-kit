@@ -96,7 +96,7 @@ assert.equal(manifest.prototypeCode.status,'experimental');
 assert.equal(manifest.prototypeCode.purpose,'clickable-prototypes-only');
 assert.equal(manifest.prototypeCode.productionLibrary.documentedHere,false);
 assert.equal(manifest.entrypoints.prototyping,'/ai/prototyping.md');
-assert.equal(manifest.entrypoints.icons,'/icons/index.json');
+assert.equal(manifest.entrypoints.icons,'/icon-library/index.json');
 for(const url of Object.values(manifest.entrypoints))await fs.access(path.join(dist,url));
 for(const file of [...manifest.sourceFiles,...manifest.assetFiles]){
  const bytes=await fs.readFile(path.join(dist,file.url));
@@ -142,6 +142,7 @@ assert((await fs.stat(path.join(dist,manifest.download))).size>0,'Downloadable l
 // The complete original pack is discoverable and portable, without a public gallery.
 const iconIndexBytes=await fs.readFile(path.join(dist,manifest.icons.index));
 const iconIndex=JSON.parse(iconIndexBytes);
+assert(!manifest.assetFiles.some(f=>/^\/Icons\/(svg\/|index\.|README)/.test(f.url)),'No case-only icon directory aliases');
 const sourceIcons=(await walk(path.join(root,'Icons'))).filter(f=>f.toLowerCase().endsWith('.svg'));
 assert.equal(sha(iconIndexBytes),manifest.icons.indexSha256,'Icon index checksum');
 assert.equal(iconIndex.count,sourceIcons.length,'All source SVGs indexed');
@@ -154,7 +155,7 @@ for(const icon of iconIndex.icons){
  const bytes=await fs.readFile(path.join(dist,icon.url));
  assert.deepEqual(bytes,await fs.readFile(path.join(root,icon.originalPath)),`Original SVG bytes: ${icon.originalPath}`);
  assert.equal(sha(bytes),icon.sha256);assert.equal(bytes.length,icon.bytes);
- assert.equal(icon.url,'/icons/'+icon.file);assert.match(icon.file,/^svg\/[a-z0-9-]+\.svg$/);
+ assert.equal(icon.url,'/icon-library/'+icon.file);assert.match(icon.file,/^svg\/[a-z0-9-]+\.svg$/);
  assert(icon.width>0&&icon.height>0&&icon.name&&iconMarkdown.includes(icon.url));
  assert(manifest.assetFiles.some(f=>f.url===icon.url&&f.sha256===icon.sha256),'Icon is in manifest assets');
 }
@@ -165,11 +166,13 @@ for(const archive of [iconArchiveBytes,await fs.readFile(path.join(dist,manifest
  const entries=storedZipEntries(archive);assert.deepEqual(entries.get('icons/index.json'),iconIndexBytes,'Portable icon catalog in both archives');
  for(const icon of iconIndex.icons)assert.equal(sha(entries.get('icons/'+icon.file)),icon.sha256,`Portable SVG: ${icon.id}`);
  assert(entries.get('icons/README.md')?.toString().includes('cpIcon'),'Actual factory icon limits documented');
+ const samplePath=entries.get('icons/README.md').toString().match(/<img src="([^"]+)"/)[1].replace('ID',iconIndex.icons[0].id);
+ assert(entries.has(path.posix.normalize(samplePath)),'Portable icon guide example resolves inside the archive');
 }
-for(const file of htmlFiles){const html=await fs.readFile(file,'utf8');assert(!/href="\/(?:icons\/|downloads\/cyberport-icons\.zip|__local\/icons)/.test(html),'No public icon gallery or navigation');}
-assert(!search.some(entry=>entry.slug==='icons'||entry.url?.startsWith('/icons/')),'No icon search section');
+for(const file of htmlFiles){const html=await fs.readFile(file,'utf8');assert(!/href="\/(?:icon-library\/|downloads\/cyberport-icons\.zip|__local\/icons)/.test(html),'No public icon gallery or navigation');}
+assert(!search.some(entry=>entry.slug==='icons'||entry.url?.startsWith('/icon-library/')),'No icon search section');
 assert(!(await fs.stat(path.join(dist,'__local')).catch(()=>null)),'Local review is outside the production build');
-for(const route of ['ai/guide.md','ai/prototyping.md','ai/prompt-prototype.txt','llms.txt'])assert((await fs.readFile(path.join(dist,route),'utf8')).includes('/icons/index.json'),`Icon discovery from ${route}`);
+for(const route of ['ai/guide.md','ai/prototyping.md','ai/prompt-prototype.txt','llms.txt'])assert((await fs.readFile(path.join(dist,route),'utf8')).includes('/icon-library/index.json'),`Icon discovery from ${route}`);
 for(const mode of ['review','handoff','prototype']){
  const prompt=await fs.readFile(path.join(dist,`ai/prompt-${mode}.txt`),'utf8');
  assert.equal(prompt,prompts[mode],`Copyable and plain-text prompt agree: ${mode}`);
