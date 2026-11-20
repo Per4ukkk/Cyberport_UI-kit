@@ -7,6 +7,8 @@ import {CONTROL_DATA} from '../ui-kit/control-data.js';
 import {componentDocs,exampleCode,componentFeatures,featureCode} from '../public/component-docs.js';
 const root=path.resolve(import.meta.dirname,'..');
 const dist=path.join(root,'dist');
+const {features={}}=JSON.parse(await fs.readFile(path.join(root,'content/site.json'),'utf8'));
+const showComponentCode=features.componentCode===true;
 async function walk(dir){const entries=await fs.readdir(dir,{withFileTypes:true});return(await Promise.all(entries.map(e=>e.isDirectory()?walk(path.join(dir,e.name)):path.join(dir,e.name)))).flat();}
 const files=await walk(dist),htmlFiles=files.filter(f=>f.endsWith('.html'));
 const catalog=JSON.parse(await fs.readFile(path.join(root,'content/catalog.json'),'utf8'));
@@ -51,7 +53,7 @@ const search=JSON.parse(await fs.readFile(path.join(dist,'search-index.json'),'u
 assert(!search.some(entry=>entry.slug==='getting-started'||entry.url==='/getting-started/'),'Integration guide removed from search');
 assert(!(await fs.stat(path.join(dist,'getting-started')).catch(()=>null)),'Integration guide is not published');
 assert(!(await fs.stat(path.join(dist,'ai/prompt-code.txt')).catch(()=>null)),'Development prompt is not published');
-for(const file of htmlFiles){const html=await fs.readFile(file,'utf8');assert(!/href="\/getting-started\/|id="component-code"|data-component-tab|Для фронтенд-разработчиков/.test(html),`No developer documentation in UI: ${file}`);}
+for(const file of htmlFiles){const html=await fs.readFile(file,'utf8');assert(!/href="\/getting-started\/|Для фронтенд-разработчиков/.test(html),`No unapproved integration guidance: ${file}`);if(!showComponentCode)assert(!/id="component-code"|data-component-tab/.test(html),`Code panels disabled: ${file}`);}
 // The interactive examples also need their local module, icon and font dependencies.
 let assets=0;
 for(const file of files.filter(f=>/\.(css|js|html)$/.test(f))){
@@ -92,6 +94,7 @@ const manifest=JSON.parse(await fs.readFile(path.join(dist,'ai/manifest.json'),'
 assert.equal(manifest.components.length,20);
 assert.equal(manifest.components.filter(c=>c.factory).length,15);
 assert.equal(manifest.review.length,2);
+assert.equal(manifest.ui.componentCode,showComponentCode,'Published code visibility matches site settings');
 assert.equal(manifest.prototypeCode.status,'experimental');
 assert.equal(manifest.prototypeCode.purpose,'clickable-prototypes-only');
 assert.equal(manifest.prototypeCode.productionLibrary.documentedHere,false);
@@ -115,7 +118,9 @@ for(const component of manifest.components){
   assert(md.includes(exampleCode(component.id)),`Machine example retains the live demo recipe: ${component.id}`);
   assert(md.includes(manifest.prototypeCode.notice),`Prototype-only scope: ${component.id}`);
   assert(md.includes(`/ai/sources/${doc.file}.txt`),`Machine source link: ${component.id}`);
-  assert(page.includes('id="component-description"')&&!page.includes('id="component-code"'),`Component description without code tabs: ${component.id}`);
+  assert(page.includes('id="component-description"'),`Component description retained: ${component.id}`);
+  assert.equal(page.includes('id="component-code"'),showComponentCode,`Code visibility: ${component.id}`);
+  if(showComponentCode){const code=page.match(/<code id="example-code"[^>]*>([\s\S]*?)<\/code>/)[1];assert.equal(unescape(code.replace(/<[^>]+>/g,'')),exampleCode(component.id),`Code matches live example: ${component.id}`);assert(page.includes('role="tabpanel" aria-labelledby="tab-code"'),'Accessible code panel');}
  }
 }
 const workflows=JSON.parse(await fs.readFile(path.join(root,'content/workflows.json'),'utf8'));
@@ -180,5 +185,5 @@ for(const mode of ['review','handoff','prototype']){
  assert(!/localhost|127\.0\.0\.1|BASE_URL/.test(prompt),'No local host or placeholder in copyable prompt');
 }
 console.log(`PASS: ${expected.length} articles / ${pdfs.length} PDFs; ${htmlFiles.length} HTML pages; ${links} internal links, ${images} image references and ${assets} runtime references; PDF text fidelity, static illustrations, contact/resource links, anchors, alt text, IDs, search index, original icons and unmodified ui-kit runtime.`);
-console.log('PASS: 2 locked review documents; developer UI hidden; all 15 component APIs/examples and sources retained for AI prototypes; prototype scope and public-site prompts.');
+console.log(`PASS: 2 locked review documents; component code ${showComponentCode?'visible':'hidden'}; 15 APIs/examples and AI sources retained; integration guide stays hidden.`);
 console.log(`PASS: ${iconIndex.count} original SVG icons, complete JSON/Markdown indexes, both archives and machine-only discovery.`);

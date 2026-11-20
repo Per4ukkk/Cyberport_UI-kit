@@ -1,1 +1,6 @@
-{"publicOrigin":"https://cyberport-ui-kit.vercel.app"}
+{
+  "publicOrigin": "https://cyberport-ui-kit.vercel.app",
+  "features": {
+    "componentCode": true
+  }
+}

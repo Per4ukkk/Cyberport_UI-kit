@@ -1,13 +1,15 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {siteIcon,writeSiteIcons} from './site-icons.mjs';
-import {buildDocumentation} from './documentation.mjs';
+import {buildDocumentation,componentTabs,renderComponentCode} from './documentation.mjs';
 
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const countLabel=n=>`${n} ${n===1?'статья':n<5?'статьи':'статей'}`;
 const demoSlugs=new Set(['button','menu-button','input','mask','phone','date','time','textarea','combobox','token-input','checkbox','radio','select','switch','badge']);
 
 export async function renderSite({root,dist,catalog,articleData}){
+ const {features={}}=JSON.parse(await fs.readFile(path.join(root,'content/site.json'),'utf8'));
+ const showComponentCode=features.componentCode===true;
  const articleBySlug=Object.fromEntries(articleData.map(a=>[a.slug,a]));
  const workflows=JSON.parse(await fs.readFile(path.join(root,'content/workflows.json'),'utf8'));
  const workflowColumn=items=>`<div>${items.map(item=>`<section class="catalog-group"><h3><a href="${item.url}">${esc(item.title)}</a></h3><p class="workflow-description">${esc(item.description)}</p></section>`).join('')}</div>`;
@@ -55,10 +57,11 @@ export async function renderSite({root,dist,catalog,articleData}){
  for(const c of catalog.categories){await write(`categories/${c.id}`,shell({title:c.title,active:c.id,pageClass:'index-page',body:`${crumbs([{title:c.title}])}<header class="page-heading"><h1>${esc(c.title)}</h1><p class="lead">${esc(c.description)}</p></header><div class="article-list">${c.articles.map(s=>{const a=articleBySlug[s];return `<a href="/docs/${s}/"><div><h2>${esc(a.title)}</h2><p>${esc(a.description)}</p></div>${siteIcon('right')}</a>`;}).join('')}${c.id==='foundations'?`<a href="/typography/"><div><h2>Типографика</h2><p>Стили текста из библиотеки: семейства шрифтов, размеры и начертания.</p></div>${siteIcon('right')}</a>`:''}</div>`}));}
  for(const [index,a] of articleData.entries()){
   const prev=articleData[index-1],next=articleData[index+1];
+  const hasCode=showComponentCode&&demoSlugs.has(a.slug),codePanel=hasCode?await renderComponentCode(root,a.slug):'';
   const tocLinks=a.toc.map(h=>`<li class="level-${h.level}"><a href="#${h.id}">${esc(h.title)}</a></li>`).join('');
   const toc=`<aside class="toc"><nav aria-label="На этой странице"><a class="toc-category" href="/categories/${a.category.id}/">${esc(a.category.title)}</a><p>На этой странице</p><ol>${tocLinks}</ol></nav></aside>`;
   const demo=demoSlugs.has(a.slug)?`<section class="component-demo" data-component-demo="${a.slug}" aria-label="Интерактивный пример: ${esc(a.title)}"><div class="demo-canvas"><div class="demo-mount"></div></div><div class="demo-settings"><div class="demo-controls"></div><button class="demo-reset" type="button">Сбросить пример ${siteIcon('reset')}</button></div><noscript>Для интерактивного примера включите JavaScript. Иллюстрации ниже доступны без него.</noscript></section>`:'';
-  await write(`docs/${a.slug}`,shell({title:a.title,description:a.description,active:a.slug,toc,pageClass:'article-page',body:`<article>${crumbs([{title:a.category.title,url:`/categories/${a.category.id}/`}])}<header class="article-header"><h1>${esc(a.title)} <span class="article-alias">${a.alias.split(' · ').map(part=>`<span class="${/[А-Яа-яЁё]/.test(part)?'alias-fragment':'alias-term'}">${esc(part)}</span>`).join(' · ')}</span></h1></header><details class="mobile-toc"><summary>На этой странице ${siteIcon('down')}</summary><nav aria-label="Разделы статьи"><ol>${tocLinks}</ol></nav></details>${demo}<section id="component-description"><div class="prose">${a.html}</div><nav class="article-pagination" aria-label="Другие статьи">${prev?`<a href="/docs/${prev.slug}/"><span>${siteIcon('left')} Предыдущая статья</span><strong>${esc(prev.title)}</strong></a>`:'<span></span>'}${next?`<a href="/docs/${next.slug}/"><span>Следующая статья ${siteIcon('right')}</span><strong>${esc(next.title)}</strong></a>`:''}</nav></section></article>`}));
+  await write(`docs/${a.slug}`,shell({title:a.title,description:a.description,active:a.slug,toc,pageClass:'article-page',body:`<article>${crumbs([{title:a.category.title,url:`/categories/${a.category.id}/`}])}<header class="article-header"><h1>${esc(a.title)} <span class="article-alias">${a.alias.split(' · ').map(part=>`<span class="${/[А-Яа-яЁё]/.test(part)?'alias-fragment':'alias-term'}">${esc(part)}</span>`).join(' · ')}</span></h1></header><details class="mobile-toc"><summary>На этой странице ${siteIcon('down')}</summary><nav aria-label="Разделы статьи"><ol>${tocLinks}</ol></nav></details>${demo}${hasCode?componentTabs():''}<section id="component-description"${hasCode?' role="tabpanel" aria-labelledby="tab-description"':''}><div class="prose">${a.html}</div><nav class="article-pagination" aria-label="Другие статьи">${prev?`<a href="/docs/${prev.slug}/"><span>${siteIcon('left')} Предыдущая статья</span><strong>${esc(prev.title)}</strong></a>`:'<span></span>'}${next?`<a href="/docs/${next.slug}/"><span>Следующая статья ${siteIcon('right')}</span><strong>${esc(next.title)}</strong></a>`:''}</nav></section>${codePanel}</article>`}));
  }
  const styleGroups=[...new Set(textStyles.map(s=>s.fontFamily))];
  const typographySections=styleGroups.map((family,i)=>({id:`font-${i}`,heading:family,text:textStyles.filter(s=>s.fontFamily===family).map(s=>`${s.name} ${s.fontStyle} ${s.fontSize}px ${s.lineHeight}px`).join(' ')}));

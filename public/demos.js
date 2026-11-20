@@ -1,7 +1,7 @@
 import {createButton,createButtonMenu,createCheckbox,createRadio,createSwitch,createField,createMaskField,createPhoneField,createTimeField,createDateField,createSelect,createCombobox,createTextArea,createTokenField,createBadge} from '/ui-kit/index.js';
 
 import {BUTTON_VARIANTS} from '/ui-kit/data.js';
-import {exampleSpec} from '/component-docs.js';
+import {exampleSpec,exampleCode} from '/component-docs.js';
 
 const names={Lg:'Large',Md:'Medium',Sm:'Small',Xs:'Extra small',Normal:'Normal',Disabled:'Disabled',Error:'Error',Warning:'Warning'};
 const factories={input:createField,mask:createMaskField,phone:createPhoneField,time:createTimeField,date:createDateField,select:createSelect,combobox:createCombobox,textarea:createTextArea,'token-input':createTokenField};
@@ -23,6 +23,7 @@ for(const demo of document.querySelectorAll('[data-component-demo]')){
   if(kind==='button'){const types=[...new Set(BUTTON_VARIANTS.filter(v=>v.use===settings.use).map(v=>v.type))];if(!types.includes(settings.type))settings.type='Normal';selectors.type.setOptions(types);selectors.type.setValue(settings.type);}
   const {size,state,use,color,type}=settings;
   const {options}=exampleSpec(kind,settings);
+  const code=document.querySelector('[data-example-code]');if(code){code.textContent=exampleCode(kind,settings);code.dispatchEvent(new Event('code-updated',{bubbles:true}));}
   if(kind==='button'){
    const button=add(createButton(options));const announce=output();button.addEventListener('click',()=>announce('Кнопка нажата'));
   }else if(kind==='menu-button'){
